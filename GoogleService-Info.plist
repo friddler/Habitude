@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>521354998434-op8gscjctiqu4ro042kn85fe3r7vjphl.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.521354998434-op8gscjctiqu4ro042kn85fe3r7vjphl</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAdrUhc8p6lV1q6kEvGU4Oco0ElHLbF8X4</string>
+	<key>GCM_SENDER_ID</key>
+	<string>521354998434</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.Habitude</string>
+	<key>PROJECT_ID</key>
+	<string>habitude-93949</string>
+	<key>STORAGE_BUCKET</key>
+	<string>habitude-93949.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:521354998434:ios:87eac33695a1642cfb9dfb</string>
+</dict>
+</plist>
