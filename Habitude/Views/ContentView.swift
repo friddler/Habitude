@@ -105,22 +105,20 @@ struct HabitListView: View {
     
     var body: some View {
         VStack {
-            List{
-                ForEach(habitListVM.habits) { habit in
-                    RowView(habit: habit, vm: habitListVM)
-                        .listRowInsets(EdgeInsets())
-                        .padding(.vertical, 4)
-                }.onDelete { IndexSet in
-                    for index in IndexSet {
-                        habitListVM.delete(index: index)
-                    }
-                    
+            ScrollView {
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 200)), GridItem(.adaptive(minimum: 200))], spacing: 20){
+                    ForEach(habitListVM.habits) { habit in
+                        RowView(habit: habit, vm: habitListVM)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    }.onDelete { IndexSet in
+                        for index in IndexSet {
+                            habitListVM.delete(index: index)
+                        }
+                        
+                    }.padding()
                 }
             }
-            .background(Color.white)
-            .cornerRadius(20)
-            .padding(.horizontal)
-            .shadow(radius: 10)
+            .shadow(radius: 5)
             HStack {
                 Button(action: {
                     // action
@@ -163,9 +161,9 @@ struct HabitListView: View {
                     habitListVM.saveToFirestore(habitName: newHabitName)
                     newHabitName = ""
                 })
-            }
+            }.background(Color.green.opacity(0.2))
         }
-        .background(Color.green.opacity(0.2))
+        
     }
 }
 struct RowView: View {
@@ -176,13 +174,22 @@ struct RowView: View {
     var body: some View {
         HStack{
             Text(habit.name)
-            Spacer()
+                .font(.system(size: 18).bold())
+                .foregroundColor(.white)
+                .frame(width: 130, height: 130)
+                .padding(15)
+                .background(Circle().foregroundColor(Color.green))
+                
+            /*
             Button(action: {
                 vm.toggleItem(habit: habit)
                 
             }) {
                 Image(systemName: habit.done ? "trophy.circle" : "circle")
+                    .padding()
+                    .foregroundColor(.green)
             }
+             */
         }
     }
 }
@@ -190,7 +197,8 @@ struct RowView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         //ContentView()
-        HabitListView()
+        //HabitListView()
         //SignInView(signedIn: true)
+        RowView(habit: Habit(name: "Running"), vm: HabitListVM())
     }
 }
