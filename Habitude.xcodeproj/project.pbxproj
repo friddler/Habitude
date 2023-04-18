@@ -14,6 +14,13 @@
 		0E5E4FF029ED46B100929FA9 /* HabitudeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5E4FEF29ED46B100929FA9 /* HabitudeTests.swift */; };
 		0E5E4FFA29ED46B100929FA9 /* HabitudeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5E4FF929ED46B100929FA9 /* HabitudeUITests.swift */; };
 		0E5E4FFC29ED46B100929FA9 /* HabitudeUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5E4FFB29ED46B100929FA9 /* HabitudeUITestsLaunchTests.swift */; };
+		0E5E500C29ED496600929FA9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0E5E500B29ED496500929FA9 /* GoogleService-Info.plist */; };
+		0E5E500F29ED4A8F00929FA9 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 0E5E500E29ED4A8F00929FA9 /* FirebaseAnalytics */; };
+		0E5E501129ED4A8F00929FA9 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 0E5E501029ED4A8F00929FA9 /* FirebaseAuth */; };
+		0E5E501329ED4A8F00929FA9 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 0E5E501229ED4A8F00929FA9 /* FirebaseFirestore */; };
+		0E5E501529ED4A8F00929FA9 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 0E5E501429ED4A8F00929FA9 /* FirebaseFirestoreSwift */; };
+		0E5E501729ED4E6C00929FA9 /* Habit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5E501629ED4E6C00929FA9 /* Habit.swift */; };
+		0ECF941329ED6DDE004097F8 /* HabitListVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECF941229ED6DDE004097F8 /* HabitListVM.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +51,10 @@
 		0E5E4FF529ED46B100929FA9 /* HabitudeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HabitudeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E5E4FF929ED46B100929FA9 /* HabitudeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitudeUITests.swift; sourceTree = "<group>"; };
 		0E5E4FFB29ED46B100929FA9 /* HabitudeUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitudeUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		0E5E500B29ED496500929FA9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		0E5E501629ED4E6C00929FA9 /* Habit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Habit.swift; sourceTree = "<group>"; };
+		0E5E501829ED56AD00929FA9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		0ECF941229ED6DDE004097F8 /* HabitListVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitListVM.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +62,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E5E500F29ED4A8F00929FA9 /* FirebaseAnalytics in Frameworks */,
+				0E5E501129ED4A8F00929FA9 /* FirebaseAuth in Frameworks */,
+				0E5E501329ED4A8F00929FA9 /* FirebaseFirestore in Frameworks */,
+				0E5E501529ED4A8F00929FA9 /* FirebaseFirestoreSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,6 +89,8 @@
 		0E5E4FD229ED46B000929FA9 = {
 			isa = PBXGroup;
 			children = (
+				0E5E501629ED4E6C00929FA9 /* Habit.swift */,
+				0E5E500B29ED496500929FA9 /* GoogleService-Info.plist */,
 				0E5E4FDD29ED46B000929FA9 /* Habitude */,
 				0E5E4FEE29ED46B100929FA9 /* HabitudeTests */,
 				0E5E4FF829ED46B100929FA9 /* HabitudeUITests */,
@@ -94,8 +111,9 @@
 		0E5E4FDD29ED46B000929FA9 /* Habitude */ = {
 			isa = PBXGroup;
 			children = (
+				0E5E501829ED56AD00929FA9 /* Info.plist */,
 				0E5E4FDE29ED46B000929FA9 /* HabitudeApp.swift */,
-				0E5E4FE029ED46B000929FA9 /* ContentView.swift */,
+				0E5E500829ED46EC00929FA9 /* Views */,
 				0E5E4FE229ED46B100929FA9 /* Assets.xcassets */,
 				0E5E4FE429ED46B100929FA9 /* Preview Content */,
 			);
@@ -127,6 +145,23 @@
 			path = HabitudeUITests;
 			sourceTree = "<group>";
 		};
+		0E5E500829ED46EC00929FA9 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0E5E4FE029ED46B000929FA9 /* ContentView.swift */,
+				0ECF941129ED6D9A004097F8 /* ViewModels */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		0ECF941129ED6D9A004097F8 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				0ECF941229ED6DDE004097F8 /* HabitListVM.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -143,6 +178,12 @@
 			dependencies = (
 			);
 			name = Habitude;
+			packageProductDependencies = (
+				0E5E500E29ED4A8F00929FA9 /* FirebaseAnalytics */,
+				0E5E501029ED4A8F00929FA9 /* FirebaseAuth */,
+				0E5E501229ED4A8F00929FA9 /* FirebaseFirestore */,
+				0E5E501429ED4A8F00929FA9 /* FirebaseFirestoreSwift */,
+			);
 			productName = Habitude;
 			productReference = 0E5E4FDB29ED46B000929FA9 /* Habitude.app */;
 			productType = "com.apple.product-type.application";
@@ -215,6 +256,9 @@
 				Base,
 			);
 			mainGroup = 0E5E4FD229ED46B000929FA9;
+			packageReferences = (
+				0E5E500D29ED4A8F00929FA9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = 0E5E4FDC29ED46B000929FA9 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -233,6 +277,7 @@
 			files = (
 				0E5E4FE629ED46B100929FA9 /* Preview Assets.xcassets in Resources */,
 				0E5E4FE329ED46B100929FA9 /* Assets.xcassets in Resources */,
+				0E5E500C29ED496600929FA9 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,8 +302,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E5E501729ED4E6C00929FA9 /* Habit.swift in Sources */,
 				0E5E4FE129ED46B000929FA9 /* ContentView.swift in Sources */,
 				0E5E4FDF29ED46B000929FA9 /* HabitudeApp.swift in Sources */,
+				0ECF941329ED6DDE004097F8 /* HabitListVM.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -414,13 +461,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Habitude/Preview Content\"";
 				DEVELOPMENT_TEAM = 8U9A4A64L9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_FILE = Habitude/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -432,6 +480,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.Habitude;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -443,13 +492,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Habitude/Preview Content\"";
 				DEVELOPMENT_TEAM = 8U9A4A64L9;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_FILE = Habitude/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -461,6 +511,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.Habitude;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -583,6 +634,40 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		0E5E500D29ED4A8F00929FA9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0E5E500E29ED4A8F00929FA9 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0E5E500D29ED4A8F00929FA9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		0E5E501029ED4A8F00929FA9 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0E5E500D29ED4A8F00929FA9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		0E5E501229ED4A8F00929FA9 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0E5E500D29ED4A8F00929FA9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		0E5E501429ED4A8F00929FA9 /* FirebaseFirestoreSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0E5E500D29ED4A8F00929FA9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestoreSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0E5E4FD329ED46B000929FA9 /* Project object */;
 }
