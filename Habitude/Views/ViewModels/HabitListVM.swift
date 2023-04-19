@@ -43,7 +43,7 @@ class HabitListVM : ObservableObject {
         
         let habit = Habit(name: habitName)
         do {
-            try habitsRef.addDocument(from: habit)
+           let _ = try habitsRef.addDocument(from: habit)
         } catch {
             print("error saving to db")
         }

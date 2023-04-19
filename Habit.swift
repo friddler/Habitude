@@ -12,10 +12,11 @@ struct Habit : Codable, Identifiable {
     
     @DocumentID var id : String? // id of document
     var name: String // Stores the name of the habit
-    var category: String = "" // stores the category of the habit
     //var streak: Int = 0 // Stores the number of days that the habit has been done
     //var reminder: Date //stores the date and the time
-    //var notes: String = "" // stores the notes of the habit if the user want to add info
+    //var days: String
+    //var weeks: Int
+    //var months: String
     var done: Bool = false // if the habit is done
     
     //var unformatedDate : Date

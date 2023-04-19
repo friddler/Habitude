@@ -29,6 +29,9 @@ struct SignInView: View {
     @State var emailText: String = ""
     @State var passwordText: String = ""
     
+    @State var showAlert = false
+    @State var alertMessage: String = ""
+    
     var body: some View {
             VStack {
                 Spacer()
@@ -58,6 +61,8 @@ struct SignInView: View {
                     auth.signIn(withEmail: emailText, password: passwordText) { result, error in
                         if error != nil {
                             print("Error signing in")
+                            alertMessage = "Error signing in. Do you have the correct credentials?"
+                            showAlert = true
                         } else {
                             signedIn = true
                         }
@@ -73,10 +78,16 @@ struct SignInView: View {
                         .cornerRadius(20)
                         .padding(.horizontal, 20)
                 }
+                .alert(isPresented: $showAlert, content: {
+                    Alert(title: Text("Oopsie.."), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+                })
+                
                 Button(action: {
                     auth.createUser(withEmail: emailText, password: passwordText) { result, error in
                         if error != nil {
                             print("Error creating account")
+                            alertMessage = "Error while creating account. Please try again"
+                            showAlert = true
                         } else {
                             signedIn = true
                             auth.currentUser?.getIDToken(completion: {token, error in
@@ -97,6 +108,9 @@ struct SignInView: View {
                         .cornerRadius(20)
                         .padding(.horizontal, 20)
                 }
+                .alert(isPresented: $showAlert, content: {
+                    Alert(title: Text("Oopsie.."), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+                })
                 
                 Spacer()
             }.background(Color.green.opacity(0.3))
@@ -107,8 +121,8 @@ struct SignInView: View {
 struct HabitListView: View {
     
     @StateObject var habitListVM = HabitListVM()
-    @State var showAddAlert = false
     @State var newHabitName = ""
+    @State var showAddView = false
     @Binding var signedIn: Bool
     
     var auth = Auth.auth()
@@ -121,10 +135,6 @@ struct HabitListView: View {
                     ForEach(habitListVM.habits) { habit in
                         RowView(habit: habit, vm: habitListVM)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    }.onDelete { IndexSet in
-                        for index in IndexSet {
-                            habitListVM.delete(index: index)
-                        }
                         
                     }.padding()
                 }
@@ -148,13 +158,16 @@ struct HabitListView: View {
                 }
                 Spacer()
                 Button(action: {
-                    showAddAlert = true
+                    showAddView = true
                 }) {
                     Image(systemName: "plus.circle.fill")
                         .font(.system(size: 50, weight: .bold))
                         .foregroundColor(.white)
                         .cornerRadius(100)
                         .padding(.bottom, 10)
+                }
+                .sheet(isPresented: $showAddView){
+                    AddHabitView(habitListVM: habitListVM)
                 }
                 Spacer()
                 Button(action: {
@@ -172,14 +185,40 @@ struct HabitListView: View {
             .onAppear {
                 habitListVM.listenToFirestore()
             }
-            .alert("Add", isPresented: $showAddAlert) {
-                TextField("Add", text: $newHabitName)
-                Button("Add", action: {
-                    habitListVM.saveToFirestore(habitName: newHabitName)
-                    newHabitName = ""
-                })
-            }.background(Color.green.opacity(0.4))
+            .background(Color.green.opacity(0.4))
+            
+            }
         }
+    }
+
+struct AddHabitView: View {
+    @ObservedObject var habitListVM = HabitListVM()
+    @Environment(\.presentationMode) var presentationMode
+    @State var habitName = ""
+    
+    
+    var body: some View {
+        VStack {
+            TextField("Habit:", text: $habitName)
+                .padding()
+                .background(Color(.systemGray6))
+                .cornerRadius(10)
+                .padding()
+            
+            Button("Save") {
+                habitListVM.saveToFirestore(habitName: habitName)
+                    habitName = ""
+                presentationMode.wrappedValue.dismiss()
+            }
+            .frame(width: 110, height: 20)
+            .font(.headline)
+            .padding()
+            .foregroundColor(.white)
+            .background(Color.green)
+            .cornerRadius(15)
+            
+        }
+        .navigationBarTitle("Add a new habbit", displayMode: .inline)
         
     }
 }
@@ -187,28 +226,98 @@ struct RowView: View {
     
     let habit : Habit
     let vm : HabitListVM
+    @State var progressValue: Float = 0.0
+    
     
     var body: some View {
-        HStack{
-            Button(action: {
-                vm.toggleItem(habit: habit)
-            }){
-                Text(habit.name)
-                    .font(.system(size: 18).bold())
-                    .foregroundColor(.white)
-                    .frame(width: 140, height: 140)
-                    .padding(15)
-                    .background(RoundedRectangle(cornerRadius: 50).foregroundColor(habit.done ? .green.opacity(0.5) : .red.opacity(0.5)))
+        ZStack{
+            VStack {
+                ProgressBar(progress: self.$progressValue)
+                    .frame(width: 150.0, height: 150.0)
+                    .padding(40.0)
+                
+                Button(action: {
+                    vm.toggleItem(habit: habit)
+                    self.updateProgress()
+                }) {
+                    
+                    Text(habit.name)
+                        .font(.system(size: 18).bold())
+                        .foregroundColor(.green)
+                    
+                }
+                
             }
+       }
+    }
+    
+    func updateProgress(){
+        self.progressValue = habit.done ? 1.0 : 0.0
+    }
+}
+
+
+struct ProgressBar: View {
+    @Binding var progress: Float
+    
+    
+    var body: some View {
+        ZStack{
+            Circle()
+                .stroke(lineWidth: 20.0)
+                .opacity(0.3)
+                .foregroundColor(Color.green)
+            Circle()
+                .trim(from: 0.0, to: CGFloat(min(self.progress, 1.0)))
+                .stroke(style: StrokeStyle(lineWidth: 20.0, lineCap: .round, lineJoin: .round))
+                .foregroundColor(Color.green)
+                .rotationEffect(Angle(degrees: 270.0))
+                .animation(.linear)
+            Text(String(format: "%.0f %%", min(self.progress, 1.0)*100.0))
+                .font(.largeTitle)
+                .bold()
+                .foregroundColor(.green)
+            
         }
     }
+    
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
-        //HabitListView()
+        //ContentView()
+        //HabitListView(signedIn: .constant(true))
         //SignInView(signedIn: true)
-        //RowView(habit: Habit(name: "Running"), vm: HabitListVM())
+        RowView(habit: Habit(name: "Running"), vm: HabitListVM())
+        //AddHabitView()
     }
 }
+
+
+/*
+ .onDelete { IndexSet in
+     for index in IndexSet {
+         habitListVM.delete(index: index)
+     }
+ 
+ 
+ 
+ .alert("Add", isPresented: $showAddAlert) {
+     TextField("Add", text: $newHabitName)
+     Button("Add", action: {
+         habitListVM.saveToFirestore(habitName: newHabitName)
+         newHabitName = ""
+     })
+ 
+ 
+ 
+ Button(action: {
+     vm.toggleItem(habit: habit)
+ }) {
+     Text(habit.name)
+         .font(.system(size: 18).bold())
+         .foregroundColor(.white)
+         .frame(width: 140, height: 140)
+         .padding(15)
+         .background(RoundedRectangle(cornerRadius: 50).foregroundColor(habit.done ? .green.opacity(0.5) : .red.opacity(0.5)))
+ */
