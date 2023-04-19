@@ -9,17 +9,20 @@ import SwiftUI
 import Firebase
 
 struct ContentView : View {
+    
+    /*
+     StateObject hanterar authVM, den söker efter förändringar och uppdaterar viewn automatiskt. Den hanterar en instans av AuthVM som är : ObservableObject
+     I contentView så är authVM ansvarig för att bestämma vilken vy som ska visas beroende på om användaren är inloggad eller inte.
+     */
+    
     @StateObject var authVM = AuthViewModel()
-    // @State var signedIn = false
     
     var body: some View {
         NavigationView {
-            Group {
-                if !signedIn {
-                    SignInView(authVM: authVM, signedIn: $signedIn)
-                } else {
-                    HabitListView(authVM: authVM, signedIn: $signedIn)
-                }
+            if authVM.signedIn {
+                HabitListView(authVM: authVM)
+            } else {
+                SignInView(authVM: authVM)
             }
         }
     }
@@ -27,11 +30,12 @@ struct ContentView : View {
 
 struct SignInView: View {
     
+    //ObservedObject används för att lyssna på förändringar som sker i en instans av authVM
+    //och uppdaterar automatiskt viewn när den ändras
+    
     @ObservedObject var authVM : AuthViewModel
     
     var auth = Auth.auth()
-    
-    @Binding var signedIn : Bool
     
     @State var emailText: String = ""
     @State var passwordText: String = ""
@@ -65,8 +69,12 @@ struct SignInView: View {
                     .padding(.bottom, 20)
                 
                 Button(action: {
-                    authVM.signIn(email: emailText, password: passwordText)
-                    
+                    if authVM.signedIn {
+                        authVM.signIn(email: emailText, password: passwordText)
+                    } else {
+                        alertMessage = "Error signing in. Do you have the correct credentials?"
+                        showAlert = true
+                    }
                 }) {
                     Text("Log In")
                         .font(.headline)
@@ -111,7 +119,6 @@ struct HabitListView: View {
     @StateObject var habitListVM = HabitListVM()
     @State var newHabitName = ""
     @State var showAddView = false
-    @Binding var signedIn: Bool
     
     var auth = Auth.auth()
     
@@ -131,7 +138,6 @@ struct HabitListView: View {
             HStack {
                 Button(action: {
                     authVM.signOut()
-                    signedIn = false
                 }) {
                     Image(systemName: "rectangle.portrait.and.arrow.right")
                         .font(.system(size: 25, weight: .bold))
@@ -170,7 +176,6 @@ struct HabitListView: View {
                 habitListVM.listenToFirestore()
             }
             .background(Color.green.opacity(0.4))
-            .onReceive(authVM.$signedIn) {signedIn = $0}
             
             }
         }
@@ -273,7 +278,7 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         //ContentView()
         //HabitListView(signedIn: .constant(true))
-        SignInView(authVM: AuthViewModel(), signedIn: .constant(true))
+        SignInView(authVM: AuthViewModel())
         //RowView(habit: Habit(name: "Running"), vm: HabitListVM())
         //AddHabitView()
     }
