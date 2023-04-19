@@ -20,6 +20,7 @@
 		0E5E501329ED4A8F00929FA9 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 0E5E501229ED4A8F00929FA9 /* FirebaseFirestore */; };
 		0E5E501529ED4A8F00929FA9 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 0E5E501429ED4A8F00929FA9 /* FirebaseFirestoreSwift */; };
 		0E5E501729ED4E6C00929FA9 /* Habit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5E501629ED4E6C00929FA9 /* Habit.swift */; };
+		0E7A4F8029EFF3160033A2E8 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E7A4F7F29EFF3160033A2E8 /* AuthViewModel.swift */; };
 		0ECF941329ED6DDE004097F8 /* HabitListVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECF941229ED6DDE004097F8 /* HabitListVM.swift */; };
 /* End PBXBuildFile section */
 
@@ -54,6 +55,7 @@
 		0E5E500B29ED496500929FA9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0E5E501629ED4E6C00929FA9 /* Habit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Habit.swift; sourceTree = "<group>"; };
 		0E5E501829ED56AD00929FA9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		0E7A4F7F29EFF3160033A2E8 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		0ECF941229ED6DDE004097F8 /* HabitListVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitListVM.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -158,6 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				0ECF941229ED6DDE004097F8 /* HabitListVM.swift */,
+				0E7A4F7F29EFF3160033A2E8 /* AuthViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -306,6 +309,7 @@
 				0E5E4FE129ED46B000929FA9 /* ContentView.swift in Sources */,
 				0E5E4FDF29ED46B000929FA9 /* HabitudeApp.swift in Sources */,
 				0ECF941329ED6DDE004097F8 /* HabitListVM.swift in Sources */,
+				0E7A4F8029EFF3160033A2E8 /* AuthViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

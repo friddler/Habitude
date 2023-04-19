@@ -9,22 +9,29 @@ import SwiftUI
 import Firebase
 
 struct ContentView : View {
-    @State var signedIn = false
+    @StateObject var authVM = AuthViewModel()
+    // @State var signedIn = false
     
     var body: some View {
         NavigationView {
-            if !signedIn {
-                SignInView(signedIn: $signedIn)
-            } else {
-                HabitListView(signedIn: $signedIn)
+            Group {
+                if !signedIn {
+                    SignInView(authVM: authVM, signedIn: $signedIn)
+                } else {
+                    HabitListView(authVM: authVM, signedIn: $signedIn)
+                }
             }
         }
     }
 }
 
 struct SignInView: View {
-    @Binding var signedIn : Bool
+    
+    @ObservedObject var authVM : AuthViewModel
+    
     var auth = Auth.auth()
+    
+    @Binding var signedIn : Bool
     
     @State var emailText: String = ""
     @State var passwordText: String = ""
@@ -58,16 +65,8 @@ struct SignInView: View {
                     .padding(.bottom, 20)
                 
                 Button(action: {
-                    auth.signIn(withEmail: emailText, password: passwordText) { result, error in
-                        if error != nil {
-                            print("Error signing in")
-                            alertMessage = "Error signing in. Do you have the correct credentials?"
-                            showAlert = true
-                        } else {
-                            signedIn = true
-                        }
-                        
-                    }
+                    authVM.signIn(email: emailText, password: passwordText)
+                    
                 }) {
                     Text("Log In")
                         .font(.headline)
@@ -83,21 +82,8 @@ struct SignInView: View {
                 })
                 
                 Button(action: {
-                    auth.createUser(withEmail: emailText, password: passwordText) { result, error in
-                        if error != nil {
-                            print("Error creating account")
-                            alertMessage = "Error while creating account. Please try again"
-                            showAlert = true
-                        } else {
-                            signedIn = true
-                            auth.currentUser?.getIDToken(completion: {token, error in
-                                if error == nil {
-                                    UserDefaults.standard.set(token, forKey: "authToken")
-                                }
-                            })
-                        }
-                        
-                    }
+                    authVM.signUp(email: emailText, password: passwordText)
+                    
                 }) {
                     Text("Create Account")
                         .font(.headline)
@@ -113,13 +99,15 @@ struct SignInView: View {
                 })
                 
                 Spacer()
-            }.background(Color.green.opacity(0.3))
+            }
+            .background(Color.green.opacity(0.3))
         }
     }
 
 
 struct HabitListView: View {
     
+    @ObservedObject var authVM : AuthViewModel
     @StateObject var habitListVM = HabitListVM()
     @State var newHabitName = ""
     @State var showAddView = false
@@ -142,12 +130,8 @@ struct HabitListView: View {
             .shadow(radius: 5)
             HStack {
                 Button(action: {
-                    do {
-                       try auth.signOut()
-                        signedIn = false
-                    } catch {
-                        print("error signing out")
-                    }
+                    authVM.signOut()
+                    signedIn = false
                 }) {
                     Image(systemName: "rectangle.portrait.and.arrow.right")
                         .font(.system(size: 25, weight: .bold))
@@ -186,6 +170,7 @@ struct HabitListView: View {
                 habitListVM.listenToFirestore()
             }
             .background(Color.green.opacity(0.4))
+            .onReceive(authVM.$signedIn) {signedIn = $0}
             
             }
         }
@@ -277,6 +262,7 @@ struct ProgressBar: View {
                 .font(.largeTitle)
                 .bold()
                 .foregroundColor(.green)
+
             
         }
     }
@@ -287,8 +273,8 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         //ContentView()
         //HabitListView(signedIn: .constant(true))
-        //SignInView(signedIn: true)
-        RowView(habit: Habit(name: "Running"), vm: HabitListVM())
+        SignInView(authVM: AuthViewModel(), signedIn: .constant(true))
+        //RowView(habit: Habit(name: "Running"), vm: HabitListVM())
         //AddHabitView()
     }
 }
