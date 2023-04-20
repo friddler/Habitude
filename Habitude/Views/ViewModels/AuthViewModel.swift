@@ -18,8 +18,6 @@ class AuthViewModel: ObservableObject {
         auth.signIn(withEmail: email, password: password) { [self] result, error in
             if error != nil {
                 print("Error signing in: \(String(describing: error?.localizedDescription))")
-                //alertMessage = "Error signing in. Do you have the correct credentials?"
-                //showAlert = true
             } else {
                 signedIn = true
             }
@@ -30,8 +28,6 @@ class AuthViewModel: ObservableObject {
         auth.createUser(withEmail: email, password: password) { [self] result, error in
             if error != nil {
                 print("Error creating account")
-                // alertMessage = "Error while creating account. Please try again"
-                // showAlert = true
             } else {
                 signedIn = true
                 

@@ -32,7 +32,7 @@ class HabitListVM : ObservableObject {
         let habitsRef = db.collection("users").document(user.uid).collection("habits")
         
         if let id = habit.id {
-            habitsRef.document(id).updateData(["done" : !habit.done])
+            habitsRef.document(id).updateData(["done" : !habit.done, "streak": habit.done ? habit.streak + 1 : 0])
         }
     }
     

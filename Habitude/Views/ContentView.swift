@@ -69,12 +69,14 @@ struct SignInView: View {
                     .padding(.bottom, 20)
                 
                 Button(action: {
-                    if authVM.signedIn {
-                        authVM.signIn(email: emailText, password: passwordText)
-                    } else {
-                        alertMessage = "Error signing in. Do you have the correct credentials?"
-                        showAlert = true
-                    }
+                    authVM.signIn(email: emailText, password: passwordText)
+//                    if emailText.isEmpty || passwordText.isEmpty {
+//                        authVM.signIn(email: emailText, password: passwordText)
+//                    } else {
+//                        alertMessage = "Error signing in. Do you have the correct credentials?"
+//                        showAlert = true
+//                    }
+                    
                 }) {
                     Text("Log In")
                         .font(.headline)
@@ -91,7 +93,12 @@ struct SignInView: View {
                 
                 Button(action: {
                     authVM.signUp(email: emailText, password: passwordText)
-                    
+//                    if emailText.isEmpty || passwordText.isEmpty {
+//                        alertMessage = "Error while creating account. Please try again"
+//                        showAlert = true
+//                    } else {
+//                        authVM.signUp(email: emailText, password: passwordText)
+//                    }
                 }) {
                     Text("Create Account")
                         .font(.headline)
@@ -197,7 +204,7 @@ struct AddHabitView: View {
             
             Button("Save") {
                 habitListVM.saveToFirestore(habitName: habitName)
-                    habitName = ""
+                habitName = ""
                 presentationMode.wrappedValue.dismiss()
             }
             .frame(width: 110, height: 20)
@@ -222,32 +229,27 @@ struct RowView: View {
     var body: some View {
         ZStack{
             VStack {
-                ProgressBar(progress: self.$progressValue)
+                ProgressBar(habit: habit, progress: self.$progressValue)
                     .frame(width: 150.0, height: 150.0)
                     .padding(40.0)
-                
-                Button(action: {
-                    vm.toggleItem(habit: habit)
-                    self.updateProgress()
-                }) {
-                    
-                    Text(habit.name)
-                        .font(.system(size: 18).bold())
-                        .foregroundColor(.green)
-                    
+                    .onTapGesture {
+                        vm.toggleItem(habit: habit)
+                        self.updateProgress()
+                    }
                 }
                 
             }
        }
-    }
-    
     func updateProgress(){
-        self.progressValue = habit.done ? 1.0 : 0.0
+        let progress = Float(min(habit.streak, 66)) / 66.0
+        self.progressValue = progress
     }
 }
 
 
 struct ProgressBar: View {
+    
+    let habit : Habit
     @Binding var progress: Float
     
     
@@ -262,12 +264,29 @@ struct ProgressBar: View {
                 .stroke(style: StrokeStyle(lineWidth: 20.0, lineCap: .round, lineJoin: .round))
                 .foregroundColor(Color.green)
                 .rotationEffect(Angle(degrees: 270.0))
-                .animation(.linear)
-            Text(String(format: "%.0f %%", min(self.progress, 1.0)*100.0))
-                .font(.largeTitle)
+            
+            Text(habit.name)
+                .font(.system(size: 18))
                 .bold()
                 .foregroundColor(.green)
-
+                .padding(.bottom, 20)
+        
+            
+            Text(String(format: "%.1f%%", habit.progress * 100))
+                .font(.system(size: 25))
+                .bold()
+                .foregroundColor(.green)
+                .padding(.top, 40)
+        }
+        .onAppear{
+            withAnimation(.linear(duration: 0.5)) {
+                self.progress = 0.0
+            }
+        }
+        .onChange(of: progress) { newValue in
+            withAnimation(.linear(duration: 0.5)) {
+                self.progress = newValue
+            }
             
         }
     }
@@ -278,8 +297,8 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         //ContentView()
         //HabitListView(signedIn: .constant(true))
-        SignInView(authVM: AuthViewModel())
-        //RowView(habit: Habit(name: "Running"), vm: HabitListVM())
+        //SignInView(authVM: AuthViewModel())
+        RowView(habit: Habit(name: "Running"), vm: HabitListVM())
         //AddHabitView()
     }
 }
