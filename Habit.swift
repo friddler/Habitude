@@ -17,8 +17,10 @@ struct Habit : Codable, Identifiable {
     //var days: String
     //var weeks: Int
     //var months: String
+    var isTapped : Bool = false
     var progress: Float  = 0
-    var done: Bool = false // if the habit is done
+    var done: Bool = false // if the habit is done in 66 days
+    
     
 //    init(name: String, progress: Float = 0, done: Bool) {
 //        self.name = name

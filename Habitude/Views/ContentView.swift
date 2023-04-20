@@ -35,8 +35,6 @@ struct SignInView: View {
     
     @ObservedObject var authVM : AuthViewModel
     
-    var auth = Auth.auth()
-    
     @State var emailText: String = ""
     @State var passwordText: String = ""
     
@@ -241,8 +239,7 @@ struct RowView: View {
             }
        }
     func updateProgress(){
-        let progress = Float(min(habit.streak, 66)) / 66.0
-        self.progressValue = progress
+        self.progressValue = habit.progress
     }
 }
 
@@ -254,7 +251,7 @@ struct ProgressBar: View {
     
     
     var body: some View {
-        ZStack{
+        ZStack {
             Circle()
                 .stroke(lineWidth: 20.0)
                 .opacity(0.3)
@@ -265,18 +262,22 @@ struct ProgressBar: View {
                 .foregroundColor(Color.green)
                 .rotationEffect(Angle(degrees: 270.0))
             
+            Text("Day: " + String(habit.streak))
+                .font(.system(size: 18))
+                .bold()
+                .foregroundColor(.green)
+                .padding(.bottom, 50)
+            
             Text(habit.name)
                 .font(.system(size: 18))
                 .bold()
                 .foregroundColor(.green)
-                .padding(.bottom, 20)
         
-            
-            Text(String(format: "%.1f%%", habit.progress * 100))
-                .font(.system(size: 25))
+            Text(String(format: "%.1f%%", self.progress * 100))
+                .font(.system(size: 20))
                 .bold()
                 .foregroundColor(.green)
-                .padding(.top, 40)
+                .padding(.top, 50)
         }
         .onAppear{
             withAnimation(.linear(duration: 0.5)) {

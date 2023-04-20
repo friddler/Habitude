@@ -32,7 +32,10 @@ class HabitListVM : ObservableObject {
         let habitsRef = db.collection("users").document(user.uid).collection("habits")
         
         if let id = habit.id {
-            habitsRef.document(id).updateData(["done" : !habit.done, "streak": habit.done ? habit.streak + 1 : 0])
+            let newStreak = habit.isTapped ? habit.streak + 1 : 0 // om den
+            let newProgress = Float(min(newStreak, 66)) / 66
+            let newDone = newStreak == 66 ? true : false
+            habitsRef.document(id).updateData(["done" : newDone, "streak": newStreak, "progress": newProgress])
         }
     }
     
