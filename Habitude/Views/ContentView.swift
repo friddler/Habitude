@@ -219,7 +219,7 @@ struct AddHabitView: View {
 }
 struct RowView: View {
     
-    let habit : Habit
+    var habit : Habit
     let vm : HabitListVM
     @State var progressValue: Float = 0.0
     

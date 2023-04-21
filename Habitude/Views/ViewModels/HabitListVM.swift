@@ -14,7 +14,7 @@ class HabitListVM : ObservableObject {
     
     @Published var habits = [Habit]()
     
-    
+    /*
     func delete(index: Int){
         guard let user = auth.currentUser else {return}
         let habitsRef = db.collection("users").document(user.uid).collection("habits")
@@ -25,6 +25,7 @@ class HabitListVM : ObservableObject {
         }
         
     }
+     */
     
     func toggleItem(habit: Habit){
 
@@ -35,11 +36,11 @@ class HabitListVM : ObservableObject {
             let newStreak = habit.isTapped ? habit.streak + 1 : 0 // om den
             let newProgress = Float(min(newStreak, 66)) / 66
             let newDone = newStreak == 66 ? true : false
-            habitsRef.document(id).updateData(["done" : newDone, "streak": newStreak, "progress": newProgress])
+            habitsRef.document(id).updateData(["done" : newDone, "streak": newStreak, "progress": newProgress, "isTapped": true])
         }
     }
     
-    func saveToFirestore(habitName: String){
+    func saveToFirestore(habitName: String) {
         
         guard let user = auth.currentUser else {return}
         let habitsRef = db.collection("users").document(user.uid).collection("habits")
