@@ -42,80 +42,80 @@ struct SignInView: View {
     @State var alertMessage: String = ""
     
     var body: some View {
-            VStack {
-                Spacer()
-                Text("Welcome to Habitude")
-                    .font(.largeTitle)
-                    .fontWeight(.semibold)
-                    .foregroundColor(.green)
-                Text("Your habbit tracker")
-                    .padding(.bottom, 10)
-        
+        VStack {
+            Spacer()
+            Text("Welcome to Habitude")
+                .font(.largeTitle)
+                .fontWeight(.semibold)
+                .foregroundColor(.green)
+            Text("Your habbit tracker")
+                .padding(.bottom, 10)
+            
+            
+            TextField("Username", text: $emailText)
+                .padding()
+                .background(Color(.systemGray6))
+                .cornerRadius(10)
+                .padding(.horizontal, 20)
+                .padding(.bottom, 10)
+            
+            SecureField("Password", text: $passwordText)
+                .padding()
+                .background(Color(.systemGray6))
+                .cornerRadius(10)
+                .padding(.horizontal, 20)
+                .padding(.bottom, 20)
+            
+            Button(action: {
+                authVM.signIn(email: emailText, password: passwordText)
+                //                    if emailText.isEmpty || passwordText.isEmpty {
+                //                        authVM.signIn(email: emailText, password: passwordText)
+                //                    } else {
+                //                        alertMessage = "Error signing in. Do you have the correct credentials?"
+                //                        showAlert = true
+                //                    }
                 
-                TextField("Username", text: $emailText)
+            }) {
+                Text("Log In")
+                    .font(.headline)
+                    .foregroundColor(.white)
                     .padding()
-                    .background(Color(.systemGray6))
-                    .cornerRadius(10)
+                    .frame(maxWidth: .infinity)
+                    .background(Color.green.opacity(0.8))
+                    .cornerRadius(20)
                     .padding(.horizontal, 20)
-                    .padding(.bottom, 10)
-                
-                SecureField("Password", text: $passwordText)
-                    .padding()
-                    .background(Color(.systemGray6))
-                    .cornerRadius(10)
-                    .padding(.horizontal, 20)
-                    .padding(.bottom, 20)
-                
-                Button(action: {
-                    authVM.signIn(email: emailText, password: passwordText)
-//                    if emailText.isEmpty || passwordText.isEmpty {
-//                        authVM.signIn(email: emailText, password: passwordText)
-//                    } else {
-//                        alertMessage = "Error signing in. Do you have the correct credentials?"
-//                        showAlert = true
-//                    }
-                    
-                }) {
-                    Text("Log In")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color.green.opacity(0.8))
-                        .cornerRadius(20)
-                        .padding(.horizontal, 20)
-                }
-                .alert(isPresented: $showAlert, content: {
-                    Alert(title: Text("Oopsie.."), message: Text(alertMessage), dismissButton: .default(Text("OK")))
-                })
-                
-                Button(action: {
-                    authVM.signUp(email: emailText, password: passwordText)
-//                    if emailText.isEmpty || passwordText.isEmpty {
-//                        alertMessage = "Error while creating account. Please try again"
-//                        showAlert = true
-//                    } else {
-//                        authVM.signUp(email: emailText, password: passwordText)
-//                    }
-                }) {
-                    Text("Create Account")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color.green.opacity(0.8))
-                        .cornerRadius(20)
-                        .padding(.horizontal, 20)
-                }
-                .alert(isPresented: $showAlert, content: {
-                    Alert(title: Text("Oopsie.."), message: Text(alertMessage), dismissButton: .default(Text("OK")))
-                })
-                
-                Spacer()
             }
-            .background(Color.green.opacity(0.3))
+            .alert(isPresented: $showAlert, content: {
+                Alert(title: Text("Oopsie.."), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+            })
+            
+            Button(action: {
+                authVM.signUp(email: emailText, password: passwordText)
+                //                    if emailText.isEmpty || passwordText.isEmpty {
+                //                        alertMessage = "Error while creating account. Please try again"
+                //                        showAlert = true
+                //                    } else {
+                //                        authVM.signUp(email: emailText, password: passwordText)
+                //                    }
+            }) {
+                Text("Create Account")
+                    .font(.headline)
+                    .foregroundColor(.white)
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color.green.opacity(0.8))
+                    .cornerRadius(20)
+                    .padding(.horizontal, 20)
+            }
+            .alert(isPresented: $showAlert, content: {
+                Alert(title: Text("Oopsie.."), message: Text(alertMessage), dismissButton: .default(Text("OK")))
+            })
+            
+            Spacer()
         }
+        .background(Color.green.opacity(0.3))
     }
+}
 
 
 struct HabitListView: View {
@@ -123,68 +123,78 @@ struct HabitListView: View {
     @ObservedObject var authVM : AuthViewModel
     @StateObject var habitListVM = HabitListVM()
     @State var newHabitName = ""
+    
     @State var showAddView = false
+    @State var showSummaryView = false
+    
     
     var auth = Auth.auth()
     
     
     var body: some View {
-        VStack {
-            ScrollView {
-                LazyVGrid(columns: [GridItem(.adaptive(minimum: 200)), GridItem(.adaptive(minimum: 200))], spacing: 10){
-                    ForEach(habitListVM.habits) { habit in
-                        RowView(habit: habit, vm: habitListVM)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            VStack {
+                Text("Frida")
+                ScrollView {
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 200)), GridItem(.adaptive(minimum: 200))], spacing: 5){
+                        ForEach(habitListVM.habits) { habit in
+                            RowView(habit: habit, vm: habitListVM)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            
+                        }.padding()
+                    }
+                }
+                .shadow(radius: 5)
+                HStack {
+                    Button(action: {
+                        authVM.signOut()
+                    }) {
+                        Image(systemName: "rectangle.portrait.and.arrow.right")
+                            .font(.system(size: 25, weight: .bold))
+                            .foregroundColor(.white)
+                            .cornerRadius(100)
+                            .padding(.horizontal, 40)
                         
-                    }.padding()
-                }
-            }
-            .shadow(radius: 5)
-            HStack {
-                Button(action: {
-                    authVM.signOut()
-                }) {
-                    Image(systemName: "rectangle.portrait.and.arrow.right")
-                        .font(.system(size: 25, weight: .bold))
-                        .foregroundColor(.white)
-                        .cornerRadius(100)
-                        .padding(.horizontal, 40)
+                    }
+                    Spacer()
+                    Button(action: {
+                        showAddView = true
+                    }) {
+                        Image(systemName: "plus.circle.fill")
+                            .font(.system(size: 50, weight: .bold))
+                            .foregroundColor(.white)
+                            .cornerRadius(100)
+                            .padding(.bottom, 10)
+                    }
+                    .sheet(isPresented: $showAddView){
+                        AddHabitView(habitListVM: habitListVM)
+                    }
+                    Spacer()
+                    
+                    Button(action: {
+                        showSummaryView = true
+                    }) {
+                        Image(systemName: "chart.pie.fill")
+                            .font(.system(size: 25, weight: .bold))
+                            .foregroundColor(.white)
+                            .cornerRadius(100)
+                            .padding(.horizontal, 40)
+                    }
+                    .fullScreenCover(isPresented: $showSummaryView) {
+                        SummaryHabitView(habitListVM: habitListVM)
+                    }
+                      
                     
                 }
-                Spacer()
-                Button(action: {
-                    showAddView = true
-                }) {
-                    Image(systemName: "plus.circle.fill")
-                        .font(.system(size: 50, weight: .bold))
-                        .foregroundColor(.white)
-                        .cornerRadius(100)
-                        .padding(.bottom, 10)
+                .padding(.horizontal)
+                .onAppear {
+                    habitListVM.listenToFirestore()
                 }
-                .sheet(isPresented: $showAddView){
-                    AddHabitView(habitListVM: habitListVM)
-                }
-                Spacer()
-                Button(action: {
-                    // action
-                    
-                }) {
-                    Image(systemName: "list.bullet.clipboard")
-                        .font(.system(size: 25, weight: .bold))
-                        .foregroundColor(.white)
-                        .cornerRadius(100)
-                        .padding(.horizontal, 40)
-                }
+                .background(Color.green.opacity(0.4))
+                
             }
-            .padding(.horizontal)
-            .onAppear {
-                habitListVM.listenToFirestore()
-            }
-            .background(Color.green.opacity(0.4))
-            
-            }
+            .background(Color.white)
         }
-    }
+}
 
 struct AddHabitView: View {
     @ObservedObject var habitListVM = HabitListVM()
@@ -229,15 +239,17 @@ struct RowView: View {
             VStack {
                 ProgressBar(habit: habit, progress: self.$progressValue)
                     .frame(width: 150.0, height: 150.0)
-                    .padding(40.0)
                     .onTapGesture {
-                        vm.toggleItem(habit: habit)
                         self.updateProgress()
+                        vm.toggleItem(habit: habit)
+                        
                     }
-                }
-                
             }
-       }
+            .onAppear{
+                updateProgress()
+            }
+        }
+    }
     func updateProgress(){
         self.progressValue = habit.progress
     }
@@ -272,8 +284,8 @@ struct ProgressBar: View {
                 .font(.system(size: 18))
                 .bold()
                 .foregroundColor(.green)
-        
-            Text(String(format: "%.1f%%", self.progress * 100))
+            
+            Text(String(format: "%.0f%%", self.progress * 100))
                 .font(.system(size: 20))
                 .bold()
                 .foregroundColor(.green)
@@ -297,9 +309,9 @@ struct ProgressBar: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         //ContentView()
-        //HabitListView(signedIn: .constant(true))
+        HabitListView(authVM: AuthViewModel())
         //SignInView(authVM: AuthViewModel())
-        RowView(habit: Habit(name: "Running"), vm: HabitListVM())
+        //RowView(habit: Habit(name: "Running"), vm: HabitListVM())
         //AddHabitView()
     }
 }
@@ -307,28 +319,28 @@ struct ContentView_Previews: PreviewProvider {
 
 /*
  .onDelete { IndexSet in
-     for index in IndexSet {
-         habitListVM.delete(index: index)
-     }
+ for index in IndexSet {
+ habitListVM.delete(index: index)
+ }
  
  
  
  .alert("Add", isPresented: $showAddAlert) {
-     TextField("Add", text: $newHabitName)
-     Button("Add", action: {
-         habitListVM.saveToFirestore(habitName: newHabitName)
-         newHabitName = ""
-     })
+ TextField("Add", text: $newHabitName)
+ Button("Add", action: {
+ habitListVM.saveToFirestore(habitName: newHabitName)
+ newHabitName = ""
+ })
  
  
  
  Button(action: {
-     vm.toggleItem(habit: habit)
+ vm.toggleItem(habit: habit)
  }) {
-     Text(habit.name)
-         .font(.system(size: 18).bold())
-         .foregroundColor(.white)
-         .frame(width: 140, height: 140)
-         .padding(15)
-         .background(RoundedRectangle(cornerRadius: 50).foregroundColor(habit.done ? .green.opacity(0.5) : .red.opacity(0.5)))
+ Text(habit.name)
+ .font(.system(size: 18).bold())
+ .foregroundColor(.white)
+ .frame(width: 140, height: 140)
+ .padding(15)
+ .background(RoundedRectangle(cornerRadius: 50).foregroundColor(habit.done ? .green.opacity(0.5) : .red.opacity(0.5)))
  */

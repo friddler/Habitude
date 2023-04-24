@@ -45,7 +45,7 @@ class HabitListVM : ObservableObject {
         guard let user = auth.currentUser else {return}
         let habitsRef = db.collection("users").document(user.uid).collection("habits")
         
-        let habit = Habit(name: habitName)
+        let habit = Habit(name: habitName, days: [0])
         do {
            let _ = try habitsRef.addDocument(from: habit)
         } catch {
