@@ -16,38 +16,21 @@ struct Habit : Codable, Identifiable {
     var isTapped : Bool = false
     var progress: Float  = 0
     var done: Bool = false // if the habit is done in 66 days
-    
     var days: [Int]
-    //var reminder: Date
+    //var reminder:
     
-   
     
-//    init(name: String, progress: Float = 0, done: Bool) {
-//        self.name = name
-//        self.progress = progress
-//        self.done = done
-//    }
+    var habitDate : Date //unformated date
     
-    //var unformatedDate : Date
-    //var dateformatter = DateFormatter()
-    
-    /*
-    var date : String {
-        return dateformatter.string(from: unformatedDate)
+    private var dateFormatter : DateFormatter {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        return formatter
     }
     
-    
-    init(){
-        self.unformatedDate = Date()
-        dateformatter.dateStyle = .medium
+    var formattedDate: String {
+        return dateFormatter.string(from: habitDate)
     }
-    
-    init(date: Date){
-        self.unformatedDate = date
-        dateformatter.dateStyle = .medium
-    }
-    
-     */
     
     
     

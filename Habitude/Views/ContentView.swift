@@ -194,36 +194,39 @@ struct HabitListView: View {
             }
             .background(Color.white)
         }
+
 }
 
+
 struct AddHabitView: View {
+    
     @ObservedObject var habitListVM = HabitListVM()
     @Environment(\.presentationMode) var presentationMode
     @State var habitName = ""
+    @State var habitDate: Date = Date.now
     
     
     var body: some View {
         VStack {
-            TextField("Habit:", text: $habitName)
-                .padding()
-                .background(Color(.systemGray6))
-                .cornerRadius(10)
-                .padding()
-            
-            Button("Save") {
-                habitListVM.saveToFirestore(habitName: habitName)
-                habitName = ""
-                presentationMode.wrappedValue.dismiss()
+            Form {
+                Section("Habit name"){
+                    TextField("Habit:", text: $habitName)
+                }
+                
+                Section("Habit started: "){
+                    DatePicker("I started on", selection: $habitDate, displayedComponents: [.date])
+                        .accentColor(Color.green)
+                }
+                
             }
-            .frame(width: 110, height: 20)
-            .font(.headline)
-            .padding()
-            .foregroundColor(.white)
-            .background(Color.green)
-            .cornerRadius(15)
-            
-        }
-        .navigationBarTitle("Add a new habbit", displayMode: .inline)
+                Button("Save") {
+                    habitListVM.saveToFirestore(habitName: habitName, habitDate: habitDate)
+                    habitName = ""
+                    presentationMode.wrappedValue.dismiss()
+                }
+                
+            }
+            .navigationBarTitle("Add a new habbit", displayMode: .inline)
         
     }
 }
@@ -309,10 +312,10 @@ struct ProgressBar: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         //ContentView()
-        HabitListView(authVM: AuthViewModel())
+        //HabitListView(authVM: AuthViewModel())
         //SignInView(authVM: AuthViewModel())
         //RowView(habit: Habit(name: "Running"), vm: HabitListVM())
-        //AddHabitView()
+        AddHabitView()
     }
 }
 

@@ -10,7 +10,6 @@ import SwiftUI
 struct SummaryHabitView: View {
     
     @ObservedObject var habitListVM = HabitListVM()
-    //let habit : Habit
     
     
     var body: some View {
@@ -20,23 +19,7 @@ struct SummaryHabitView: View {
                     .font(.headline)
                     .background(Color(.systemGray6))
                 
-                VStack (alignment: .leading){
-                    Text("Monday")
-                    Text("Tuesday")
-                    Text("Wednesday")
-                    Text("Thursday")
-                    Text("Friday")
-                    Text("Saturday")
-                    Text("Sunday")
-                    
-                }
                 
-                HStack {
-                    ForEach(0..<7) { index in
-                        let isDone = habit.days.contains(index)
-                        Text("\(isDone ? "✅" : "❌")")
-                    }
-                }
             }
         }
     }
