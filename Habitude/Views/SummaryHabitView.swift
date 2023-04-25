@@ -19,12 +19,14 @@ struct SummaryHabitView: View {
                     .font(.headline)
                     .background(Color(.systemGray6))
                 
+        
                 
+
             }
         }
+        
     }
 }
-
 
 struct SummaryHabitView_Previews: PreviewProvider {
     static var previews: some View {

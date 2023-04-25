@@ -14,28 +14,30 @@ class HabitListVM : ObservableObject {
     
     @Published var habits = [Habit]()
     
-    /*
-    func delete(index: Int){
+    
+    func delete(habit: Habit){
+        
         guard let user = auth.currentUser else {return}
+        guard let habitIndex = habits.firstIndex(of: habit) else {return}
+        
         let habitsRef = db.collection("users").document(user.uid).collection("habits")
         
-        let habit = habits[index]
         if let id = habit.id {
             habitsRef.document(id).delete()
         }
         
+        habits.remove(at: habitIndex)
     }
-     */
     
     func toggleItem(habit: Habit){
 
         guard let user = auth.currentUser else {return}
         let habitsRef = db.collection("users").document(user.uid).collection("habits")
         
-        if let id = habit.id {
-            let newStreak = habit.isTapped ? habit.streak + 1 : 0 // om den
-            let newProgress = Float(min(newStreak, 66)) / 66
-            let newDone = newStreak == 66 ? true : false
+        if let id = habit.id { // if the habit has an id
+            let newStreak = habit.isTapped ? habit.streak + 1 : 0 // increase the streak if habit is tapped else reset
+            let newProgress = Float(newStreak) / 65 // progress is % of 66-day goal, divided by 65 because first day is 0
+            let newDone = newStreak == 66 ? true : false // if habit is done, done updates // what happens after???
             habitsRef.document(id).updateData(["done" : newDone, "streak": newStreak, "progress": newProgress, "isTapped": true])
         }
     }
@@ -45,7 +47,8 @@ class HabitListVM : ObservableObject {
         guard let user = auth.currentUser else {return}
         let habitsRef = db.collection("users").document(user.uid).collection("habits")
         
-        let habit = Habit(name: habitName, days: [0], habitDate: habitDate)
+        let habit = Habit(name: habitName, days: [0])
+        //, habitDate: habitDate
         do {
            let _ = try habitsRef.addDocument(from: habit)
         } catch {

@@ -140,8 +140,11 @@ struct HabitListView: View {
                             RowView(habit: habit, vm: habitListVM)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                             
-                        }.padding()
+                        }
+                        .padding()
+                        
                     }
+                    
                 }
                 .shadow(radius: 5)
                 HStack {
@@ -219,17 +222,18 @@ struct AddHabitView: View {
                 }
                 
             }
-                Button("Save") {
-                    habitListVM.saveToFirestore(habitName: habitName, habitDate: habitDate)
-                    habitName = ""
-                    presentationMode.wrappedValue.dismiss()
-                }
-                
-            }
-            .navigationBarTitle("Add a new habbit", displayMode: .inline)
         
+            
+            Button("Save") {
+                habitListVM.saveToFirestore(habitName: habitName, habitDate: habitDate)
+                habitName = ""
+                presentationMode.wrappedValue.dismiss()
+            }
+            
+        }
     }
 }
+
 struct RowView: View {
     
     var habit : Habit
@@ -247,10 +251,18 @@ struct RowView: View {
                         vm.toggleItem(habit: habit)
                         
                     }
+                    .onAppear{
+                        updateProgress()
+                    }
+                Button(action: {
+                    vm.delete(habit: habit)
+                }, label: {
+                    Image(systemName: "minus.circle.fill")
+                        .foregroundColor(.red)
+                    
+                })
             }
-            .onAppear{
-                updateProgress()
-            }
+            
         }
     }
     func updateProgress(){
@@ -314,18 +326,18 @@ struct ContentView_Previews: PreviewProvider {
         //ContentView()
         //HabitListView(authVM: AuthViewModel())
         //SignInView(authVM: AuthViewModel())
-        //RowView(habit: Habit(name: "Running"), vm: HabitListVM())
-        AddHabitView()
+        RowView(habit: Habit(name: "Running", days: [0]), vm: HabitListVM())
+        //AddHabitView()
     }
 }
 
 
 /*
+ 
  .onDelete { IndexSet in
  for index in IndexSet {
  habitListVM.delete(index: index)
  }
- 
  
  
  .alert("Add", isPresented: $showAddAlert) {

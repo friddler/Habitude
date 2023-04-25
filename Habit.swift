@@ -8,7 +8,7 @@
 import Foundation
 import FirebaseFirestoreSwift
 
-struct Habit : Codable, Identifiable {
+struct Habit : Codable, Identifiable, Equatable {
     
     @DocumentID var id : String? // id of document
     var name: String // Stores the name of the habit
@@ -20,9 +20,9 @@ struct Habit : Codable, Identifiable {
     //var reminder:
     
     
-    var habitDate : Date //unformated date
+    /*var habitDate : Date //unformated date
     
-    private var dateFormatter : DateFormatter {
+    var dateFormatter : DateFormatter {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         return formatter
@@ -31,6 +31,7 @@ struct Habit : Codable, Identifiable {
     var formattedDate: String {
         return dateFormatter.string(from: habitDate)
     }
+     */
     
     
     
