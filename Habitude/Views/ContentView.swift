@@ -132,8 +132,8 @@ struct HabitListView: View {
     
     
     var body: some View {
+        NavigationView {
             VStack {
-                Text("Frida")
                 ScrollView {
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: 200)), GridItem(.adaptive(minimum: 200))], spacing: 5){
                         ForEach(habitListVM.habits) { habit in
@@ -142,9 +142,7 @@ struct HabitListView: View {
                             
                         }
                         .padding()
-                        
                     }
-                    
                 }
                 .shadow(radius: 5)
                 HStack {
@@ -173,20 +171,13 @@ struct HabitListView: View {
                     }
                     Spacer()
                     
-                    Button(action: {
-                        showSummaryView = true
-                    }) {
+                    NavigationLink(destination: SummaryHabitView(habitListVM: habitListVM)) {
                         Image(systemName: "chart.pie.fill")
                             .font(.system(size: 25, weight: .bold))
                             .foregroundColor(.white)
                             .cornerRadius(100)
                             .padding(.horizontal, 40)
                     }
-                    .fullScreenCover(isPresented: $showSummaryView) {
-                        SummaryHabitView(habitListVM: habitListVM)
-                    }
-                      
-                    
                 }
                 .padding(.horizontal)
                 .onAppear {
@@ -196,7 +187,10 @@ struct HabitListView: View {
                 
             }
             .background(Color.white)
+           
         }
+        .navigationBarHidden(true)
+    }
 
 }
 
@@ -324,7 +318,7 @@ struct ProgressBar: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         //ContentView()
-        //HabitListView(authVM: AuthViewModel())
+        HabitListView(authVM: AuthViewModel())
         //SignInView(authVM: AuthViewModel())
         RowView(habit: Habit(name: "Running", days: [0]), vm: HabitListVM())
         //AddHabitView()
@@ -334,10 +328,6 @@ struct ContentView_Previews: PreviewProvider {
 
 /*
  
- .onDelete { IndexSet in
- for index in IndexSet {
- habitListVM.delete(index: index)
- }
  
  
  .alert("Add", isPresented: $showAddAlert) {
