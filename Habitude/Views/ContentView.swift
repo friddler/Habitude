@@ -67,13 +67,13 @@ struct SignInView: View {
                 .padding(.bottom, 20)
             
             Button(action: {
-                authVM.signIn(email: emailText, password: passwordText)
-                //                    if emailText.isEmpty || passwordText.isEmpty {
-                //                        authVM.signIn(email: emailText, password: passwordText)
-                //                    } else {
-                //                        alertMessage = "Error signing in. Do you have the correct credentials?"
-                //                        showAlert = true
-                //                    }
+                if emailText.isEmpty || passwordText.isEmpty {
+                    alertMessage = "Error signing in. Do you have the correct credentials?"
+                    showAlert = true
+                } else {
+                    authVM.signIn(email: emailText, password: passwordText)
+                    
+                }
                 
             }) {
                 Text("Log In")
@@ -90,13 +90,12 @@ struct SignInView: View {
             })
             
             Button(action: {
-                authVM.signUp(email: emailText, password: passwordText)
-                //                    if emailText.isEmpty || passwordText.isEmpty {
-                //                        alertMessage = "Error while creating account. Please try again"
-                //                        showAlert = true
-                //                    } else {
-                //                        authVM.signUp(email: emailText, password: passwordText)
-                //                    }
+                if emailText.isEmpty || passwordText.isEmpty {
+                    alertMessage = "Error while creating account. Please try again"
+                    showAlert = true
+                } else {
+                    authVM.signUp(email: emailText, password: passwordText)
+                }
             }) {
                 Text("Create Account")
                     .font(.headline)
@@ -128,23 +127,19 @@ struct HabitListView: View {
     @State var showSummaryView = false
     
     
-    var auth = Auth.auth()
-    
-    
     var body: some View {
         NavigationView {
             VStack {
                 ScrollView {
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 200)), GridItem(.adaptive(minimum: 200))], spacing: 5){
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 200)), GridItem(.adaptive(minimum: 200))], spacing: 10){
                         ForEach(habitListVM.habits) { habit in
                             RowView(habit: habit, vm: habitListVM)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            
                         }
-                        .padding()
                     }
+                    .padding(.top, 70)
                 }
-                .shadow(radius: 5)
+                
                 HStack {
                     Button(action: {
                         authVM.signOut()
@@ -169,6 +164,7 @@ struct HabitListView: View {
                     .sheet(isPresented: $showAddView){
                         AddHabitView(habitListVM: habitListVM)
                     }
+                    
                     Spacer()
                     
                     NavigationLink(destination: SummaryHabitView(habitListVM: habitListVM)) {
@@ -179,17 +175,18 @@ struct HabitListView: View {
                             .padding(.horizontal, 40)
                     }
                 }
-                .padding(.horizontal)
+                .padding(.horizontal, 20)
                 .onAppear {
                     habitListVM.listenToFirestore()
                 }
                 .background(Color.green.opacity(0.4))
+                .padding(.bottom, 10)
                 
             }
             .background(Color.white)
-           
+            .edgesIgnoringSafeArea(.all)
         }
-        .navigationBarHidden(true)
+        
     }
 
 }
@@ -238,15 +235,16 @@ struct RowView: View {
     var body: some View {
         ZStack{
             VStack {
-                ProgressBar(habit: habit, progress: self.$progressValue)
+                ProgressBar(habit: habit, progress: $progressValue)
                     .frame(width: 150.0, height: 150.0)
                     .onTapGesture {
-                        self.updateProgress()
                         vm.toggleItem(habit: habit)
+                        updateProgress()
                         
                     }
                     .onAppear{
                         updateProgress()
+    
                     }
                 Button(action: {
                     vm.delete(habit: habit)
@@ -260,7 +258,7 @@ struct RowView: View {
         }
     }
     func updateProgress(){
-        self.progressValue = habit.progress
+        progressValue = habit.progress
     }
 }
 
@@ -277,11 +275,13 @@ struct ProgressBar: View {
                 .stroke(lineWidth: 20.0)
                 .opacity(0.3)
                 .foregroundColor(Color.green)
+                .shadow(radius: 5)
             Circle()
                 .trim(from: 0.0, to: CGFloat(min(self.progress, 1.0)))
                 .stroke(style: StrokeStyle(lineWidth: 20.0, lineCap: .round, lineJoin: .round))
                 .foregroundColor(Color.green)
                 .rotationEffect(Angle(degrees: 270.0))
+                .shadow(radius: 5)
             
             Text("Day: " + String(habit.streak))
                 .font(.system(size: 18))
@@ -294,11 +294,12 @@ struct ProgressBar: View {
                 .bold()
                 .foregroundColor(.green)
             
-            Text(String(format: "%.0f%%", self.progress * 100))
+            Text(String(format: "%.0f%%", progress * 100))
                 .font(.system(size: 20))
                 .bold()
                 .foregroundColor(.green)
                 .padding(.top, 50)
+             
         }
         .onAppear{
             withAnimation(.linear(duration: 0.5)) {
@@ -318,12 +319,21 @@ struct ProgressBar: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         //ContentView()
-        HabitListView(authVM: AuthViewModel())
+        //HabitListView(authVM: AuthViewModel())
         //SignInView(authVM: AuthViewModel())
-        RowView(habit: Habit(name: "Running", days: [0]), vm: HabitListVM())
+        //RowView(habit: Habit(name: "Running", days: [0]), vm: HabitListVM())
         //AddHabitView()
+        let mockHabitListVM = HabitListVM()
+        mockHabitListVM.habits = [
+            Habit(id: "1", name: "Exercise", progress: 0.5, days: [0]),
+            Habit(id: "2", name: "Running", progress: 0.5, days: [0]),
+            Habit(id: "3",name: "Meditate", progress: 0.5, days: [0]),
+            Habit(name: "Rune", progress: 0.5, days: [0])
+        ]
+        return HabitListView(authVM: AuthViewModel(), habitListVM: mockHabitListVM)
     }
 }
+
 
 
 /*

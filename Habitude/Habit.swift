@@ -20,6 +20,8 @@ struct Habit : Codable, Identifiable, Equatable {
     //var reminder:
     
     
+    
+}
     /*var habitDate : Date //unformated date
     
     var dateFormatter : DateFormatter {
@@ -35,4 +37,4 @@ struct Habit : Codable, Identifiable, Equatable {
     
     
     
-}
+

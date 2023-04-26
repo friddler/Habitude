@@ -93,7 +93,6 @@
 		0E5E4FD229ED46B000929FA9 = {
 			isa = PBXGroup;
 			children = (
-				0E5E501629ED4E6C00929FA9 /* Habit.swift */,
 				0E5E500B29ED496500929FA9 /* GoogleService-Info.plist */,
 				0E5E4FDD29ED46B000929FA9 /* Habitude */,
 				0E5E4FEE29ED46B100929FA9 /* HabitudeTests */,
@@ -116,6 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				0E5E501829ED56AD00929FA9 /* Info.plist */,
+				0E5E501629ED4E6C00929FA9 /* Habit.swift */,
 				0E5E4FDE29ED46B000929FA9 /* HabitudeApp.swift */,
 				0E5E500829ED46EC00929FA9 /* Views */,
 				0E5E4FE229ED46B100929FA9 /* Assets.xcassets */,
