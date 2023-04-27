@@ -72,7 +72,6 @@ struct SignInView: View {
                     showAlert = true
                 } else {
                     authVM.signIn(email: emailText, password: passwordText)
-                    
                 }
                 
             }) {
@@ -132,12 +131,12 @@ struct HabitListView: View {
             VStack {
                 ScrollView {
                     LazyVGrid(columns: [GridItem(.adaptive(minimum: 200)), GridItem(.adaptive(minimum: 200))], spacing: 10){
-                        ForEach(habitListVM.habits) { habit in
+                        ForEach(habitListVM.habits, id: \.id) { habit in
                             RowView(habit: habit, vm: habitListVM)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                         }
                     }
-                    .padding(.top, 70)
+                    .padding(.top, 90)
                 }
                 
                 HStack {
@@ -179,8 +178,8 @@ struct HabitListView: View {
                 .onAppear {
                     habitListVM.listenToFirestore()
                 }
-                .background(Color.green.opacity(0.4))
-                .padding(.bottom, 10)
+                .background(Color.green.opacity(0.3))
+                .padding(.bottom, 15)
                 
             }
             .background(Color.white)
@@ -197,7 +196,7 @@ struct AddHabitView: View {
     @ObservedObject var habitListVM = HabitListVM()
     @Environment(\.presentationMode) var presentationMode
     @State var habitName = ""
-    @State var habitDate: Date = Date.now
+    @State var habitStarted: Date = Date.now
     
     
     var body: some View {
@@ -208,19 +207,17 @@ struct AddHabitView: View {
                 }
                 
                 Section("Habit started: "){
-                    DatePicker("I started on", selection: $habitDate, displayedComponents: [.date])
+                    DatePicker("I started on", selection: $habitStarted, displayedComponents: [.date])
                         .accentColor(Color.green)
                 }
-                
             }
-        
             
             Button("Save") {
-                habitListVM.saveToFirestore(habitName: habitName, habitDate: habitDate)
+                habitListVM.saveToFirestore(habitName: habitName, habitStarted: habitStarted)
                 habitName = ""
                 presentationMode.wrappedValue.dismiss()
+                
             }
-            
         }
     }
 }
@@ -229,7 +226,7 @@ struct RowView: View {
     
     var habit : Habit
     let vm : HabitListVM
-    @State var progressValue: Float = 0.0
+    @State var progressValue: Float = 0
     
     
     var body: some View {
@@ -238,27 +235,39 @@ struct RowView: View {
                 ProgressBar(habit: habit, progress: $progressValue)
                     .frame(width: 150.0, height: 150.0)
                     .onTapGesture {
-                        vm.toggleItem(habit: habit)
-                        updateProgress()
+                        vm.toggleItem(habit: habit) {
+                            updateProgress()
+                        }
                         
                     }
                     .onAppear{
                         updateProgress()
-    
+                        
                     }
+                
                 Button(action: {
                     vm.delete(habit: habit)
                 }, label: {
                     Image(systemName: "minus.circle.fill")
                         .foregroundColor(.red)
-                    
                 })
+            }
+        }
+    }
+    
+    func updateProgress(){
+        
+        /*
+         The dispatch queue performs the code asynchronously with the main code. if the id of the habit matches the id in the habitlistvm it updates the progressvalue
+         */
+        
+        DispatchQueue.main.async {
+            if let habit = vm.habits.first(where: {$0.id == self.habit.id}) {
+                progressValue = habit.progress
+                print("progress: \(habit.progress)")
             }
             
         }
-    }
-    func updateProgress(){
-        progressValue = habit.progress
     }
 }
 
@@ -310,10 +319,8 @@ struct ProgressBar: View {
             withAnimation(.linear(duration: 0.5)) {
                 self.progress = newValue
             }
-            
         }
     }
-    
 }
 
 struct ContentView_Previews: PreviewProvider {

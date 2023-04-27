@@ -16,66 +16,46 @@ class HabitListVM : ObservableObject {
     
     
     @Published var habits = [Habit]()
-    var lastToggled = [String: Date]()
     
-    
-    
-    func delete(habit: Habit){
+    func toggleItem(habit: Habit, completion: @escaping () -> Void){
         
-        guard let user = auth.currentUser else {return}
-        guard let habitIndex = habits.firstIndex(of: habit) else {return}
+        /*
+         The completion closure ensures that the progressvalue is only updated after the habit is updated in firebase.
+         without the completion escaping, this function runs synchronusly and returns after the setData is called. the prgoressvalue is then being updated before the firestore method is done, which is resulting in displaying wrong data in my view.
+         */
         
+        guard let user = auth.currentUser else { return }
         let habitsRef = db.collection("users").document(user.uid).collection("habits")
         
-        if let id = habit.id {
-            habitsRef.document(id).delete()
-        }
+        guard let id = habit.id else { return }
         
-        habits.remove(at: habitIndex)
+        let newStreak = habit.isTapped ? habit.streak + 1 : 1
+        let newProgress = Float(newStreak) / 66.0
+        let newDone = newStreak >= 66
+        
+        let updatedData: [String: Any] = ["isTapped" : true, "streak": newStreak,
+                                          "progress": newProgress, "done": newDone,
+                                          "lastToggled": Date()]
+        
+        habitsRef.document(id).setData(updatedData, merge: true) { error in
+            if let error = error {
+                print("error updating habit: \(error)")
+            } else {
+                print("habit updated successfully")
+                completion()
+            }
+        }
     }
     
-    func toggleItem(habit: Habit){
+    
+    func saveToFirestore(habitName: String, habitStarted: Date) {
         
         guard let user = auth.currentUser else {return}
         let habitsRef = db.collection("users").document(user.uid).collection("habits")
         
-        guard let id = habit.id else {
-            return // don't update if the habit has no ID
-        }
-        
-        if let lastToggled = lastToggled[id], Calendar.current.isDate(Date(), inSameDayAs: lastToggled) {
-            print("already toggled today")
-            return // don't update if the habit has been toggled today
-        }
-        
-        if !habit.isTapped {
-            // If the habit has not been tapped yet, set isTapped to true and update the progress and streak accordingly
-            let newProgress = 1.0 / 66.0 // update progress to 1/66
-            let newStreak = 1 // set streak to 1
-            habitsRef.document(id).updateData(["progress": newProgress, "streak": newStreak, "isTapped": true])
-            lastToggled[id] = Date() // update the last toggling time for the habit
-            return
-        }
-        
-        // If the habit has already been tapped, update the streak and progress
-        let newStreak = habit.isTapped || habit.streak == 0 ? habit.streak + 1 : 0 // increase the streak if habit is tapped or if it's the first time habit, else reset
-        let newProgress = Float(newStreak) / 66.0 // update the progress
-        let newDone = newStreak == 66 ? true : false
-        
-        habitsRef.document(id).updateData(["done" : newDone, "streak": newStreak, "progress": newProgress, "isTapped": true])
-        lastToggled[id] = Date() // update the last toggling time for the habit
-        
-    }
-
-    func saveToFirestore(habitName: String, habitDate: Date) {
-        
-        guard let user = auth.currentUser else {return}
-        let habitsRef = db.collection("users").document(user.uid).collection("habits")
-        
-        let habit = Habit(name: habitName, days: [0])
-        //, habitDate: habitDate
+        let habit = Habit(name: habitName, days: [0], habitStarted: habitStarted)
         do {
-           let _ = try habitsRef.addDocument(from: habit)
+            let _ = try habitsRef.addDocument(from: habit)
         } catch {
             print("error saving to db")
         }
@@ -108,5 +88,45 @@ class HabitListVM : ObservableObject {
         }
     }
     
+    func delete(habit: Habit){
+        
+        guard let user = auth.currentUser else {return}
+        guard let habitIndex = habits.firstIndex(of: habit) else {return}
+        
+        let habitsRef = db.collection("users").document(user.uid).collection("habits")
+        
+        if let id = habit.id {
+            habitsRef.document(id).delete()
+        }
+        
+        habits.remove(at: habitIndex)
+    }
+    
     
 }
+
+
+/*
+ 
+ if let lastToggled = lastToggled[id], Calendar.current.isDate(Date(), inSameDayAs: lastToggled) {
+     print("already toggled today")
+     return // don't update if the habit has been toggled today
+ }
+ // If the habit has not been tapped yet, set isTapped to true and update the progress and streak accordingly
+ if !habit.isTapped {
+     
+     let newProgress = 1.0 / 66.0 // update progress to 1/66
+     let newStreak = 1 // set streak to 1
+     habitsRef.document(id).updateData(["progress": newProgress, "streak": newStreak, "isTapped": true])
+     lastToggled[id] = Date() // update the last toggling time for the habit
+     return
+ }
+ 
+ // If the habit has already been tapped, update the streak and progress
+ let newStreak = habit.isTapped || habit.streak == 0 ? habit.streak + 1 : 0 // increase the streak if habit is tapped or if it's the first time habit, else reset
+ let newProgress = Float(newStreak) / 66.0 // update the progress
+ let newDone = newStreak == 66 ? true : false
+ 
+ //lastToggled[id] = Date() // update the last toggling time for the habit
+ 
+ */
