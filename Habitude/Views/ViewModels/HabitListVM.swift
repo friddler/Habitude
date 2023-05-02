@@ -16,6 +16,8 @@ class HabitListVM : ObservableObject {
     
     
     @Published var habits = [Habit]()
+    @Published var completedHabits = [Habit]()
+    
     
     func toggleItem(habit: Habit, completion: @escaping () -> Void){
         
@@ -42,11 +44,30 @@ class HabitListVM : ObservableObject {
                 print("error updating habit: \(error)")
             } else {
                 print("habit updated successfully")
+                
+                if newDone {
+                    self.saveCompleteHabit(habit: habit)
+                }
+                
                 completion()
             }
         }
     }
     
+    func saveCompleteHabit(habit: Habit){
+        
+        guard let user = auth.currentUser else { return }
+        let completeHabitsRef = db.collection("users").document(user.uid).collection("completeHabits")
+        
+        var completedHabit = habit
+        completedHabit.done = true
+        
+        do {
+            let _ = try completeHabitsRef.addDocument(from: completedHabit)
+        } catch {
+            print("Error saving complete habit: \(error)")
+        }
+    }
     
     func saveToFirestore(habitName: String, habitStarted: Date) {
         
@@ -57,8 +78,38 @@ class HabitListVM : ObservableObject {
         do {
             let _ = try habitsRef.addDocument(from: habit)
         } catch {
-            print("error saving to db")
+            print("error saving habit")
         }
+    }
+    
+    func listenToCompletedHabitsFirestore(){
+        
+        guard let user = auth.currentUser else {return}
+        let habitsRef = db.collection("users").document(user.uid).collection("completeHabits")
+        
+        habitsRef.addSnapshotListener(){
+            snapshot, err in
+            
+            guard let snapshot = snapshot else {return}
+            
+            if let err = err {
+                print("Error getting document \(err)")
+            } else {
+                self.completedHabits.removeAll()
+                for document in snapshot.documents {
+                    do {
+                        let habit = try document.data(as: Habit.self)
+                        self.completedHabits.append(habit)
+                    } catch {
+                        print("error reading complete habits from db")
+                    }
+                    
+                }
+                
+            }
+        }
+        
+        
     }
     
     func listenToFirestore(){
@@ -102,31 +153,5 @@ class HabitListVM : ObservableObject {
         habits.remove(at: habitIndex)
     }
     
-    
 }
 
-
-/*
- 
- if let lastToggled = lastToggled[id], Calendar.current.isDate(Date(), inSameDayAs: lastToggled) {
-     print("already toggled today")
-     return // don't update if the habit has been toggled today
- }
- // If the habit has not been tapped yet, set isTapped to true and update the progress and streak accordingly
- if !habit.isTapped {
-     
-     let newProgress = 1.0 / 66.0 // update progress to 1/66
-     let newStreak = 1 // set streak to 1
-     habitsRef.document(id).updateData(["progress": newProgress, "streak": newStreak, "isTapped": true])
-     lastToggled[id] = Date() // update the last toggling time for the habit
-     return
- }
- 
- // If the habit has already been tapped, update the streak and progress
- let newStreak = habit.isTapped || habit.streak == 0 ? habit.streak + 1 : 0 // increase the streak if habit is tapped or if it's the first time habit, else reset
- let newProgress = Float(newStreak) / 66.0 // update the progress
- let newDone = newStreak == 66 ? true : false
- 
- //lastToggled[id] = Date() // update the last toggling time for the habit
- 
- */
