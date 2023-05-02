@@ -31,9 +31,12 @@ class HabitListVM : ObservableObject {
         
         guard let id = habit.id else { return }
         
-        let newStreak = habit.isTapped ? habit.streak + 1 : 1
-        let newProgress = Float(newStreak) / 66.0
-        let newDone = newStreak >= 66
+        if let lastToggled = habit.lastToggled, Calendar.current.isDateInToday(lastToggled) {
+            print("Habit already tapped")
+            return
+        }
+        
+        let (newStreak, newProgress, newDone) = updateHabitProgress(habit: habit)
         
         let updatedData: [String: Any] = ["isTapped" : true, "streak": newStreak,
                                           "progress": newProgress, "done": newDone,
@@ -46,19 +49,36 @@ class HabitListVM : ObservableObject {
                 print("habit updated successfully")
                 
                 if newDone {
-                    if let index = self.habits.firstIndex(where: {$0.id == habit.id}) { //checks if the habit is complete ->
-                        let completedHabit = self.habits.remove(at: index) //removes the complete habit from the habits array ->
-                        self.completedHabits.append(completedHabit) //appends the complete habit to the array ->
-                        habitsRef.document(id).delete() // deletes the habit from firebase
-                        self.saveCompleteHabit(habit: completedHabit) //saves the complete habit to a new collection
-                    }
+                    self.completeHabitFunctionality(habit: habit)
                 }
-                completion()
             }
+            completion()
         }
     }
     
     
+    func completeHabitFunctionality(habit: Habit){
+        guard let user = auth.currentUser else { return }
+        let habitsRef = db.collection("users").document(user.uid).collection("habits")
+        
+        guard let id = habit.id else { return }
+        
+        if let index = self.habits.firstIndex(where: {$0.id == habit.id}) { //checks if the habit is complete ->
+            let completedHabit = self.habits.remove(at: index) //removes the complete habit from the habits array ->
+            self.completedHabits.append(completedHabit) //appends the complete habit to the array ->
+            habitsRef.document(id).delete() // deletes the habit from firebase
+            self.saveCompleteHabit(habit: completedHabit) //saves the complete habit to a new collection
+        }
+    }
+    
+    func updateHabitProgress(habit: Habit) -> (Int, Float, Bool) {
+        let newStreak = habit.isTapped ? habit.streak + 1 : 1
+        let newProgress = Float(newStreak) / 66.0
+        let newDone = newStreak >= 66
+        
+        return (newStreak, newProgress, newDone)
+        
+    }
     
     func saveCompleteHabit(habit: Habit){
         
@@ -66,7 +86,6 @@ class HabitListVM : ObservableObject {
         let completeHabitsRef = db.collection("users").document(user.uid).collection("completeHabits")
         
         var completedHabit = habit
-        completedHabit.done = true
         
         do {
             let _ = try completeHabitsRef.addDocument(from: completedHabit)

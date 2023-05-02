@@ -14,7 +14,7 @@ struct Habit : Codable, Identifiable, Equatable {
     var name: String // Stores the name of the habit
     var streak: Int = 0 // Stores the number of days that the habit has been done
     var isTapped : Bool = false // if the habits been tapped
-    var progress: Float  = 0 //progressbar value
+    var progress: Float  = 0 // progressbar value
     var done: Bool = false // if the habit is done, done = true in 66 days
     var days: [Int]
     var lastToggled: Date?

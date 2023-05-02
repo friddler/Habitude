@@ -13,18 +13,27 @@ struct SummaryHabitView: View {
     
     
     var body: some View {
-        ScrollView(.horizontal) {
-            HStack(spacing: 30) {
-                ForEach(habitListVM.completedHabits) { habit in
-                    CompletedHabitView(habitlistVM: habitListVM, habit: habit)
+        VStack{
+            ScrollView(.horizontal) {
+                HStack(spacing: 30) {
+                    ForEach(habitListVM.completedHabits) { habit in
+                        CompletedHabitView(habitlistVM: habitListVM, habit: habit)
+                    }
                 }
+                .padding(.horizontal, 20)
             }
-            .padding(.horizontal, 20)
+            .frame(height: 200)
+            Spacer()
+            
+            
+            
         }
         .onAppear {
             habitListVM.listenToCompletedHabitsFirestore()
             print(habitListVM.completedHabits.count)
         }
+        
+        
     }
 }
 
@@ -39,8 +48,9 @@ struct CompletedHabitView: View {
             VStack {
                 ProgressViewComplete(habit: habit, progress: .constant(1.0))
                     .frame(width: 150.0, height: 150.0)
-                    .padding(.horizontal, 20)
-                
+                    .padding(.horizontal, 10)
+                    .padding(.top, 30)
+                Spacer()
                 
             }
         }
@@ -92,7 +102,16 @@ struct ProgressViewComplete: View {
 struct SummaryHabitView_Previews: PreviewProvider {
     static var previews: some View {
         //SummaryHabitView()
-        CompletedHabitView(habitlistVM: HabitListVM(), habit: Habit(name: "Running", days: [0]))
+        //CompletedHabitView(habitlistVM: HabitListVM(), habit: Habit(name: "Running", days: [0]))
+        let mockHabits = [
+                    Habit(name: "Running", streak: 5, isTapped: true, progress: 0.5, done: false, days: [1, 3, 5], lastToggled: Date(), habitStarted: Date()),
+                    Habit(name: "Meditation", streak: 10, isTapped: false, progress: 0.8, done: true, days: [1, 2, 3, 4, 5, 6, 7], lastToggled: Date(), habitStarted: Date())
+                ]
+                
+                let habitListVM = HabitListVM()
+                habitListVM.completedHabits = mockHabits
+                
+                return SummaryHabitView(habitListVM: habitListVM)
     }
 }
 
