@@ -46,13 +46,19 @@ class HabitListVM : ObservableObject {
                 print("habit updated successfully")
                 
                 if newDone {
-                    self.saveCompleteHabit(habit: habit)
+                    if let index = self.habits.firstIndex(where: {$0.id == habit.id}) { //checks if the habit is complete ->
+                        let completedHabit = self.habits.remove(at: index) //removes the complete habit from the habits array ->
+                        self.completedHabits.append(completedHabit) //appends the complete habit to the array ->
+                        habitsRef.document(id).delete() // deletes the habit from firebase
+                        self.saveCompleteHabit(habit: completedHabit) //saves the complete habit to a new collection
+                    }
                 }
-                
                 completion()
             }
         }
     }
+    
+    
     
     func saveCompleteHabit(habit: Habit){
         
