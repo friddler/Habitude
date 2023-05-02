@@ -52,6 +52,7 @@ struct SignInView: View {
                 .padding(.bottom, 10)
             
             
+            
             TextField("Username", text: $emailText)
                 .padding()
                 .background(Color(.systemGray6))
@@ -177,6 +178,7 @@ struct HabitListView: View {
                 .padding(.horizontal, 20)
                 .onAppear {
                     habitListVM.listenToFirestore()
+                    
                 }
                 .background(Color.green.opacity(0.3))
                 .padding(.bottom, 15)
@@ -242,7 +244,6 @@ struct RowView: View {
                     }
                     .onAppear{
                         updateProgress()
-                        
                     }
                 
                 Button(action: {
@@ -327,17 +328,17 @@ struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         //ContentView()
         //HabitListView(authVM: AuthViewModel())
-        //SignInView(authVM: AuthViewModel())
+        SignInView(authVM: AuthViewModel())
         //RowView(habit: Habit(name: "Running", days: [0]), vm: HabitListVM())
         //AddHabitView()
-        let mockHabitListVM = HabitListVM()
-        mockHabitListVM.habits = [
-            Habit(id: "1", name: "Exercise", progress: 0.5, days: [0]),
-            Habit(id: "2", name: "Running", progress: 0.5, days: [0]),
-            Habit(id: "3",name: "Meditate", progress: 0.5, days: [0]),
-            Habit(name: "Rune", progress: 0.5, days: [0])
-        ]
-        return HabitListView(authVM: AuthViewModel(), habitListVM: mockHabitListVM)
+//        let mockHabitListVM = HabitListVM()
+//        mockHabitListVM.habits = [
+//            Habit(id: "1", name: "Exercise", progress: 0.5, days: [0]),
+//            Habit(id: "2", name: "Running", progress: 0.5, days: [0]),
+//            Habit(id: "3",name: "Meditate", progress: 0.5, days: [0]),
+//            Habit(name: "Rune", progress: 0.5, days: [0])
+//        ]
+//        return HabitListView(authVM: AuthViewModel(), habitListVM: mockHabitListVM)
     }
 }
 

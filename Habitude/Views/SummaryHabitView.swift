@@ -25,6 +25,7 @@ struct SummaryHabitView: View {
             .frame(height: 200)
             Spacer()
             
+
             
             
         }
@@ -77,7 +78,7 @@ struct ProgressViewComplete: View {
                 .trim(from: 0.0, to: CGFloat(min(self.progress, 1.0)))
                 .stroke(style: StrokeStyle(lineWidth: 20.0, lineCap: .round, lineJoin: .round))
                 .foregroundColor(Color.green)
-                .rotationEffect(Angle(degrees: 270.0))
+                .rotationEffect(Angle(degrees: 270.0)) //?? check out
                 .shadow(radius: 5)
             
             Text(habit.name)

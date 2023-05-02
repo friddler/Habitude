@@ -56,6 +56,23 @@ class HabitListVM : ObservableObject {
         }
     }
     
+    func resetHabitIfNotTapped(habit: Habit){
+        
+
+        guard let user = auth.currentUser else { return }
+        let habitsRef = db.collection("users").document(user.uid).collection("habits")
+        
+        guard let lastToggled = habit.lastToggled else { return }
+        
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        let lastToggledDate = calendar.startOfDay(for: lastToggled)
+        guard lastToggledDate < today else { return }
+        
+        if let id = habit.id {
+            habitsRef.document(id).setData(["streak": 0, "progress": 0], merge: true)
+        }
+    }
     
     func completeHabitFunctionality(habit: Habit){
         guard let user = auth.currentUser else { return }
@@ -85,7 +102,7 @@ class HabitListVM : ObservableObject {
         guard let user = auth.currentUser else { return }
         let completeHabitsRef = db.collection("users").document(user.uid).collection("completeHabits")
         
-        var completedHabit = habit
+        let completedHabit = habit
         
         do {
             let _ = try completeHabitsRef.addDocument(from: completedHabit)
@@ -128,13 +145,9 @@ class HabitListVM : ObservableObject {
                     } catch {
                         print("error reading complete habits from db")
                     }
-                    
                 }
-                
             }
         }
-        
-        
     }
     
     func listenToFirestore(){
