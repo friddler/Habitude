@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0E3200742A019B7E007F8C10 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 0E3200732A019B7E007F8C10 /* Lottie */; };
+		0E3200782A019D18007F8C10 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3200772A019D18007F8C10 /* LottieView.swift */; };
+		0E32007A2A019F06007F8C10 /* meditate.json in Resources */ = {isa = PBXBuildFile; fileRef = 0E3200792A019F06007F8C10 /* meditate.json */; };
 		0E5E4FDF29ED46B000929FA9 /* HabitudeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5E4FDE29ED46B000929FA9 /* HabitudeApp.swift */; };
 		0E5E4FE129ED46B000929FA9 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5E4FE029ED46B000929FA9 /* ContentView.swift */; };
 		0E5E4FE329ED46B100929FA9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0E5E4FE229ED46B100929FA9 /* Assets.xcassets */; };
@@ -43,6 +46,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0E3200772A019D18007F8C10 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
+		0E3200792A019F06007F8C10 /* meditate.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = meditate.json; sourceTree = "<group>"; };
 		0E5E4FDB29ED46B000929FA9 /* Habitude.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Habitude.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E5E4FDE29ED46B000929FA9 /* HabitudeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitudeApp.swift; sourceTree = "<group>"; };
 		0E5E4FE029ED46B000929FA9 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -66,6 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E3200742A019B7E007F8C10 /* Lottie in Frameworks */,
 				0E5E500F29ED4A8F00929FA9 /* FirebaseAnalytics in Frameworks */,
 				0E5E501129ED4A8F00929FA9 /* FirebaseAuth in Frameworks */,
 				0E5E501329ED4A8F00929FA9 /* FirebaseFirestore in Frameworks */,
@@ -90,9 +96,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0E32007B2A019F65007F8C10 /* Lottie Files */ = {
+			isa = PBXGroup;
+			children = (
+				0E3200792A019F06007F8C10 /* meditate.json */,
+			);
+			path = "Lottie Files";
+			sourceTree = "<group>";
+		};
 		0E5E4FD229ED46B000929FA9 = {
 			isa = PBXGroup;
 			children = (
+				0E32007B2A019F65007F8C10 /* Lottie Files */,
 				0E5E500B29ED496500929FA9 /* GoogleService-Info.plist */,
 				0E5E4FDD29ED46B000929FA9 /* Habitude */,
 				0E5E4FEE29ED46B100929FA9 /* HabitudeTests */,
@@ -154,6 +169,7 @@
 			children = (
 				0E7A4F8129F2AEB10033A2E8 /* SummaryHabitView.swift */,
 				0E5E4FE029ED46B000929FA9 /* ContentView.swift */,
+				0E3200772A019D18007F8C10 /* LottieView.swift */,
 				0ECF941129ED6D9A004097F8 /* ViewModels */,
 			);
 			path = Views;
@@ -189,6 +205,7 @@
 				0E5E501029ED4A8F00929FA9 /* FirebaseAuth */,
 				0E5E501229ED4A8F00929FA9 /* FirebaseFirestore */,
 				0E5E501429ED4A8F00929FA9 /* FirebaseFirestoreSwift */,
+				0E3200732A019B7E007F8C10 /* Lottie */,
 			);
 			productName = Habitude;
 			productReference = 0E5E4FDB29ED46B000929FA9 /* Habitude.app */;
@@ -264,6 +281,7 @@
 			mainGroup = 0E5E4FD229ED46B000929FA9;
 			packageReferences = (
 				0E5E500D29ED4A8F00929FA9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				0E3200722A019B7E007F8C10 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			productRefGroup = 0E5E4FDC29ED46B000929FA9 /* Products */;
 			projectDirPath = "";
@@ -283,6 +301,7 @@
 			files = (
 				0E5E4FE629ED46B100929FA9 /* Preview Assets.xcassets in Resources */,
 				0E5E4FE329ED46B100929FA9 /* Assets.xcassets in Resources */,
+				0E32007A2A019F06007F8C10 /* meditate.json in Resources */,
 				0E5E500C29ED496600929FA9 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -312,6 +331,7 @@
 				0E5E501729ED4E6C00929FA9 /* Habit.swift in Sources */,
 				0E5E4FE129ED46B000929FA9 /* ContentView.swift in Sources */,
 				0E5E4FDF29ED46B000929FA9 /* HabitudeApp.swift in Sources */,
+				0E3200782A019D18007F8C10 /* LottieView.swift in Sources */,
 				0ECF941329ED6DDE004097F8 /* HabitListVM.swift in Sources */,
 				0E7A4F8029EFF3160033A2E8 /* AuthViewModel.swift in Sources */,
 			);
@@ -644,6 +664,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		0E3200722A019B7E007F8C10 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
 		0E5E500D29ED4A8F00929FA9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
@@ -655,6 +683,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		0E3200732A019B7E007F8C10 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 0E3200722A019B7E007F8C10 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
 		0E5E500E29ED4A8F00929FA9 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 0E5E500D29ED4A8F00929FA9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;

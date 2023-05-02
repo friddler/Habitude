@@ -53,6 +53,12 @@ struct SignInView: View {
             
             
             
+            LottieView(loopMode: .loop)
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 200, height: 200)
+            
+            
+            
             TextField("Username", text: $emailText)
                 .padding()
                 .background(Color(.systemGray6))
