@@ -8,6 +8,7 @@
 import SwiftUI
 import Firebase
 
+
 struct ContentView : View {
     
     /*
@@ -113,6 +114,7 @@ struct SignInView: View {
                     .background(Color.green.opacity(0.8))
                     .cornerRadius(20)
                     .padding(.horizontal, 20)
+                    .padding(.bottom, 30)
             }
             .alert(isPresented: $showAlert, content: {
                 Alert(title: Text("Oopsie.."), message: Text(alertMessage), dismissButton: .default(Text("OK")))
@@ -121,6 +123,7 @@ struct SignInView: View {
             Spacer()
         }
         .background(Color.green.opacity(0.3))
+        
     }
 }
 
@@ -192,7 +195,6 @@ struct HabitListView: View {
                 .padding(.bottom, 15)
                 
             }
-            .background(Color.white)
             .edgesIgnoringSafeArea(.all)
         }
         
@@ -334,18 +336,11 @@ struct ProgressBar: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         //ContentView()
-        //HabitListView(authVM: AuthViewModel())
-        SignInView(authVM: AuthViewModel())
-        //RowView(habit: Habit(name: "Running", days: [0]), vm: HabitListVM())
+        HabitListView(authVM: AuthViewModel())
+        //SignInView(authVM: AuthViewModel())
+        //RowView(habit: Habit(name: "Running", vm: HabitListVM())
         //AddHabitView()
-//        let mockHabitListVM = HabitListVM()
-//        mockHabitListVM.habits = [
-//            Habit(id: "1", name: "Exercise", progress: 0.5, days: [0]),
-//            Habit(id: "2", name: "Running", progress: 0.5, days: [0]),
-//            Habit(id: "3",name: "Meditate", progress: 0.5, days: [0]),
-//            Habit(name: "Rune", progress: 0.5, days: [0])
-//        ]
-//        return HabitListView(authVM: AuthViewModel(), habitListVM: mockHabitListVM)
+//
     }
 }
 

@@ -11,7 +11,6 @@ struct SummaryHabitView: View {
     
     @ObservedObject var habitListVM = HabitListVM()
     
-    
     var body: some View {
         VStack{
             ScrollView(.horizontal) {
@@ -25,45 +24,73 @@ struct SummaryHabitView: View {
             .frame(height: 200)
             Spacer()
             
+            Text("Summary").font(.title)
+            List {
+               
+            }
 
-            
-            
         }
         .onAppear {
             habitListVM.listenToCompletedHabitsFirestore()
             print(habitListVM.completedHabits.count)
         }
-        
-        
+
     }
+    
 }
 
 struct CompletedHabitView: View {
     
     var habitlistVM : HabitListVM
     let habit : Habit
+    @State var isFlipped = false
     
-
     var body: some View {
-        VStack(spacing: 30) {
+        ZStack {
             VStack {
                 ProgressViewComplete(habit: habit, progress: .constant(1.0))
                     .frame(width: 150.0, height: 150.0)
                     .padding(.horizontal, 10)
                     .padding(.top, 30)
+                    .onTapGesture {
+                        withAnimation {
+                            self.isFlipped.toggle()
+                        }
+                    }
+                    .opacity(isFlipped ? 0 : 1)
                 Spacer()
-                
+            }
+            
+            VStack {
+                Text("Start: \(String(habit.formattedStartDate))")
+                    .font(.system(size: 14))
+                    .multilineTextAlignment(.center)
+                    .frame(width: 100, height: 40)
+                Text("End: \(String(habit.formattedEndDate))")
+                    .font(.system(size: 14))
+                    .multilineTextAlignment(.center)
+                    .frame(width: 100, height: 40)
+        
+            }
+            .frame(width: 150, height: 150)
+            .scaleEffect(x: -1) // without this the text gets mirrored
+            .background(Circle().foregroundColor(.green).opacity(0.2))
+            .overlay(Circle().stroke(lineWidth: 20.0).foregroundColor(.green).shadow(radius: 5))
+            .rotation3DEffect(.degrees(isFlipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
+            .opacity(isFlipped ? 1 : 0)
+            .onTapGesture {
+                withAnimation {
+                    self.isFlipped.toggle()
+                }
             }
         }
     }
-    
 }
 
 struct ProgressViewComplete: View {
     
     let habit : Habit
     @Binding var progress: Float
-    
     
     var body: some View {
         ZStack {
@@ -76,24 +103,13 @@ struct ProgressViewComplete: View {
                 .trim(from: 0.0, to: CGFloat(min(self.progress, 1.0)))
                 .stroke(style: StrokeStyle(lineWidth: 20.0, lineCap: .round, lineJoin: .round))
                 .foregroundColor(Color.green)
-                .rotationEffect(Angle(degrees: 270.0)) //?? check out
                 .shadow(radius: 5)
             
             Text(habit.name)
                 .font(.system(size: 20))
                 .bold()
                 .foregroundColor(.green)
-             
-        }
-        .onAppear{
-            withAnimation(.linear(duration: 0.5)) {
-                self.progress = 0.0
-            }
-        }
-        .onChange(of: progress) { newValue in
-            withAnimation(.linear(duration: 0.5)) {
-                self.progress = newValue
-            }
+            
         }
     }
 }
@@ -101,10 +117,10 @@ struct ProgressViewComplete: View {
 struct SummaryHabitView_Previews: PreviewProvider {
     static var previews: some View {
         //SummaryHabitView()
-        //CompletedHabitView(habitlistVM: HabitListVM(), habit: Habit(name: "Running", days: [0]))
+        //CompletedHabitView(habitlistVM: HabitListVM(), habit: Habit(name: "Running"))
         let mockHabits = [
-                    Habit(name: "Running", streak: 5, isTapped: true, progress: 0.5, done: false, days: [1, 3, 5], lastToggled: Date(), habitStarted: Date()),
-                    Habit(name: "Meditation", streak: 10, isTapped: false, progress: 0.8, done: true, days: [1, 2, 3, 4, 5, 6, 7], lastToggled: Date(), habitStarted: Date())
+                    Habit(name: "Running", streak: 5, isTapped: true, progress: 0.5, done: false, lastToggled: Date(), habitStarted: Date()),
+                    Habit(name: "Meditation", streak: 10, isTapped: false, progress: 0.8, done: true, lastToggled: Date(), habitStarted: Date())
                 ]
                 
                 let habitListVM = HabitListVM()

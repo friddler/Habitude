@@ -16,15 +16,9 @@ struct Habit : Codable, Identifiable, Equatable {
     var isTapped : Bool = false // if the habits been tapped
     var progress: Float  = 0 // progressbar value
     var done: Bool = false // if the habit is done, done = true in 66 days
-    var days: [Int]
     var lastToggled: Date?
     var habitStarted: Date?
     //var reminder:
-    
-    
-    
-}
-    /*var habitDate : Date //unformated date
     
     var dateFormatter : DateFormatter {
         let formatter = DateFormatter()
@@ -32,10 +26,22 @@ struct Habit : Codable, Identifiable, Equatable {
         return formatter
     }
     
-    var formattedDate: String {
-        return dateFormatter.string(from: habitDate)
+    var formattedStartDate: String {
+        guard let startDate = habitStarted else { return "" }
+        return dateFormatter.string(from: startDate)
     }
-     */
+    
+    var formattedEndDate: String {
+        guard let endDate = lastToggled else { return "" }
+        return dateFormatter.string(from: endDate)
+        
+    }
+    
+    
+}
+
+    
+  
     
     
     
