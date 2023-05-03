@@ -15,7 +15,6 @@ struct LottieView: UIViewRepresentable {
     func makeUIView(context: Context) -> Lottie.LottieAnimationView {
         let animationView = LottieAnimationView(name: "meditate")
         animationView.loopMode = loopMode
-        animationView.contentMode = .scaleAspectFit
         animationView.play()
         return animationView
     }

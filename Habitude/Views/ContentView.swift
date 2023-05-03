@@ -49,14 +49,16 @@ struct SignInView: View {
                 .fontWeight(.semibold)
                 .foregroundColor(.green)
             Text("Your habbit tracker")
-                .padding(.bottom, 10)
+                .padding(.bottom, 60)
             
             
-            
-            LottieView(loopMode: .loop)
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 200, height: 200)
-            
+            ZStack(alignment: .center) {
+                LottieView(loopMode: .loop)
+                    .frame(maxWidth: 200, maxHeight: 200)
+                    .scaleEffect(0.4)
+                    .padding(.bottom, 42)
+                    .padding(.leading, 10)
+            }
             
             
             TextField("Username", text: $emailText)
@@ -195,7 +197,6 @@ struct HabitListView: View {
         }
         
     }
-
 }
 
 

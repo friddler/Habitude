@@ -35,6 +35,7 @@ class HabitListVM : ObservableObject {
             print("Habit already tapped")
             return
         }
+         
         
         let (newStreak, newProgress, newDone) = updateHabitProgress(habit: habit)
         

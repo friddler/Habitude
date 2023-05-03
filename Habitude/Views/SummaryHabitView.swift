@@ -59,8 +59,6 @@ struct CompletedHabitView: View {
     
 }
 
-
-
 struct ProgressViewComplete: View {
     
     let habit : Habit
