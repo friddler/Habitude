@@ -54,13 +54,12 @@ struct SignInView: View {
             
             
             ZStack(alignment: .center) {
-                LottieView(loopMode: .loop)
+                LottieView(loopMode: .loop, animationName: "meditate")
                     .frame(maxWidth: 200, maxHeight: 200)
                     .scaleEffect(0.4)
                     .padding(.bottom, 42)
                     .padding(.leading, 10)
             }
-            
             
             TextField("Username", text: $emailText)
                 .padding()
@@ -136,6 +135,7 @@ struct HabitListView: View {
     
     @State var showAddView = false
     @State var showSummaryView = false
+    @State var showCompleteAlert = false
     
     
     var body: some View {
@@ -336,8 +336,8 @@ struct ProgressBar: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         //ContentView()
-        HabitListView(authVM: AuthViewModel())
-        //SignInView(authVM: AuthViewModel())
+        //HabitListView(authVM: AuthViewModel())
+        SignInView(authVM: AuthViewModel())
         //RowView(habit: Habit(name: "Running", vm: HabitListVM())
         //AddHabitView()
 //

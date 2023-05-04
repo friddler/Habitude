@@ -25,6 +25,8 @@
 		0E5E501729ED4E6C00929FA9 /* Habit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E5E501629ED4E6C00929FA9 /* Habit.swift */; };
 		0E7A4F8029EFF3160033A2E8 /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E7A4F7F29EFF3160033A2E8 /* AuthViewModel.swift */; };
 		0E7A4F8229F2AEB10033A2E8 /* SummaryHabitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E7A4F8129F2AEB10033A2E8 /* SummaryHabitView.swift */; };
+		0EBE81802A03C85F00E3CA09 /* green.json in Resources */ = {isa = PBXBuildFile; fileRef = 0EBE817F2A03C85F00E3CA09 /* green.json */; };
+		0EBE81842A040C0600E3CA09 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EBE81832A040C0600E3CA09 /* DateExtension.swift */; };
 		0ECF941329ED6DDE004097F8 /* HabitListVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECF941229ED6DDE004097F8 /* HabitListVM.swift */; };
 /* End PBXBuildFile section */
 
@@ -63,6 +65,8 @@
 		0E5E501829ED56AD00929FA9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		0E7A4F7F29EFF3160033A2E8 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		0E7A4F8129F2AEB10033A2E8 /* SummaryHabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryHabitView.swift; sourceTree = "<group>"; };
+		0EBE817F2A03C85F00E3CA09 /* green.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = green.json; sourceTree = "<group>"; };
+		0EBE81832A040C0600E3CA09 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		0ECF941229ED6DDE004097F8 /* HabitListVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitListVM.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -100,6 +104,7 @@
 			isa = PBXGroup;
 			children = (
 				0E3200792A019F06007F8C10 /* meditate.json */,
+				0EBE817F2A03C85F00E3CA09 /* green.json */,
 			);
 			path = "Lottie Files";
 			sourceTree = "<group>";
@@ -131,6 +136,8 @@
 			children = (
 				0E5E501829ED56AD00929FA9 /* Info.plist */,
 				0E5E501629ED4E6C00929FA9 /* Habit.swift */,
+				0E3200772A019D18007F8C10 /* LottieView.swift */,
+				0EBE81832A040C0600E3CA09 /* DateExtension.swift */,
 				0E5E4FDE29ED46B000929FA9 /* HabitudeApp.swift */,
 				0E5E500829ED46EC00929FA9 /* Views */,
 				0E5E4FE229ED46B100929FA9 /* Assets.xcassets */,
@@ -169,7 +176,6 @@
 			children = (
 				0E7A4F8129F2AEB10033A2E8 /* SummaryHabitView.swift */,
 				0E5E4FE029ED46B000929FA9 /* ContentView.swift */,
-				0E3200772A019D18007F8C10 /* LottieView.swift */,
 				0ECF941129ED6D9A004097F8 /* ViewModels */,
 			);
 			path = Views;
@@ -299,6 +305,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0EBE81802A03C85F00E3CA09 /* green.json in Resources */,
 				0E5E4FE629ED46B100929FA9 /* Preview Assets.xcassets in Resources */,
 				0E5E4FE329ED46B100929FA9 /* Assets.xcassets in Resources */,
 				0E32007A2A019F06007F8C10 /* meditate.json in Resources */,
@@ -328,6 +335,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E7A4F8229F2AEB10033A2E8 /* SummaryHabitView.swift in Sources */,
+				0EBE81842A040C0600E3CA09 /* DateExtension.swift in Sources */,
 				0E5E501729ED4E6C00929FA9 /* Habit.swift in Sources */,
 				0E5E4FE129ED46B000929FA9 /* ContentView.swift in Sources */,
 				0E5E4FDF29ED46B000929FA9 /* HabitudeApp.swift in Sources */,

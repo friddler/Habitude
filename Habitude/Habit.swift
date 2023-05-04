@@ -18,7 +18,6 @@ struct Habit : Codable, Identifiable, Equatable {
     var done: Bool = false // if the habit is done, done = true in 66 days
     var lastToggled: Date?
     var habitStarted: Date?
-    //var reminder:
     
     var dateFormatter : DateFormatter {
         let formatter = DateFormatter()
@@ -37,12 +36,4 @@ struct Habit : Codable, Identifiable, Equatable {
         
     }
     
-    
 }
-
-    
-  
-    
-    
-    
-

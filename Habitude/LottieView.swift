@@ -10,10 +10,13 @@ import Lottie
 
 struct LottieView: UIViewRepresentable {
     
+    
     let loopMode: LottieLoopMode
+    let animationName: String
+    
     
     func makeUIView(context: Context) -> Lottie.LottieAnimationView {
-        let animationView = LottieAnimationView(name: "meditate")
+        let animationView = LottieAnimationView(name: animationName)
         animationView.loopMode = loopMode
         animationView.play()
         return animationView

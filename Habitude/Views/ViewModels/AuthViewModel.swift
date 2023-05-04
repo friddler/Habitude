@@ -14,6 +14,29 @@ class AuthViewModel: ObservableObject {
     
     var auth = Auth.auth()
     
+    
+    func scheduleDailyNotification(hour: Int, minute: Int, identifier: String, title: String, body: String) {
+        let center = UNUserNotificationCenter.current()
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.body = body
+        content.sound = .default
+        
+        var dateComponents = DateComponents()
+        dateComponents.hour = hour
+        dateComponents.minute = minute
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        
+        let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
+        
+        center.add(request) { error in
+            if let error = error {
+                print("Error scheduling notification: \(error.localizedDescription)")
+            }
+        }
+    }
+    
     func signIn(email: String, password: String){
         auth.signIn(withEmail: email, password: password) { [self] result, error in
             if error != nil {
@@ -21,6 +44,8 @@ class AuthViewModel: ObservableObject {
             } else {
                 signedIn = true
             }
+            
+            scheduleDailyNotification(hour: 9, minute: 0, identifier: "habitReminder", title: "Habit Reminder", body: "Don't forget to tap your habits to keep your streak!")
         }
     }
     

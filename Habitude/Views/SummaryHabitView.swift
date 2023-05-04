@@ -12,31 +12,69 @@ struct SummaryHabitView: View {
     @ObservedObject var habitListVM = HabitListVM()
     
     var body: some View {
-        VStack{
-            ScrollView(.horizontal) {
-                HStack(spacing: 30) {
-                    ForEach(habitListVM.completedHabits) { habit in
-                        CompletedHabitView(habitlistVM: habitListVM, habit: habit)
-                    }
-                }
-                .padding(.horizontal, 20)
-            }
-            .frame(height: 200)
-            Spacer()
+        ZStack {
+            LottieView(loopMode: .loop, animationName: "green")
+                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+                .edgesIgnoringSafeArea(.all)
+                .opacity(0.5)
             
-            Text("Summary").font(.title)
-            List {
-               
+            VStack{
+                
+                Text("Completed Habits").font(.title2)
+                    .fontDesign(.monospaced)
+                    .padding(.top, 55)
+                
+                ScrollView(.horizontal) {
+                    HStack(spacing: 30) {
+                        ForEach(habitListVM.completedHabits) { habit in
+                            CompletedHabitView(habitlistVM: habitListVM, habit: habit)
+                        }
+                    }
+                    .padding(.horizontal, 20)
+                }
+                .frame(height: 200)
+                
+                VStack{
+                    CardView(header: "Today", habitCount: habitsCompleted(for: .day))
+                    CardView(header: "This Week", habitCount: habitsCompleted(for: .weekOfYear))
+                    CardView(header: "This Month", habitCount: habitsCompleted(for: .month))
+                    CardView(header: "This Year", habitCount: habitsCompleted(for: .year))
+                }
+                .padding(.top, 30)
+                
+                Spacer()
+    
             }
-
         }
         .onAppear {
             habitListVM.listenToCompletedHabitsFirestore()
             print(habitListVM.completedHabits.count)
         }
-
+    }
+    func habitsCompleted(for component: Calendar.Component) -> Int {
+        habitListVM.completedHabits.filter { $0.lastToggled?.isWithinSame(component: component, as: Date()) == true }.count
     }
     
+}
+
+struct CardView: View {
+    var header: String
+    var habitCount: Int
+    
+    var body: some View {
+        VStack(alignment: .center, spacing: 10) {
+            Text(header)
+                .font(.headline)
+            Text("\(habitCount)")
+        }
+        .padding(.bottom, 10)
+        .padding(.top, 10)
+        .frame(maxWidth: 160)
+        .background(Color.white)
+        .cornerRadius(10)
+        .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 5)
+        
+    }
 }
 
 struct CompletedHabitView: View {
@@ -66,15 +104,17 @@ struct CompletedHabitView: View {
                     .font(.system(size: 14))
                     .multilineTextAlignment(.center)
                     .frame(width: 100, height: 40)
+                    .fontDesign(.monospaced)
                 Text("End: \(String(habit.formattedEndDate))")
                     .font(.system(size: 14))
                     .multilineTextAlignment(.center)
                     .frame(width: 100, height: 40)
-        
+                    .fontDesign(.monospaced)
+                
             }
             .frame(width: 150, height: 150)
             .scaleEffect(x: -1) // without this the text gets mirrored
-            .background(Circle().foregroundColor(.green).opacity(0.2))
+            .background(Circle().foregroundColor(.green).opacity(0.1))
             .overlay(Circle().stroke(lineWidth: 20.0).foregroundColor(.green).shadow(radius: 5))
             .rotation3DEffect(.degrees(isFlipped ? 180 : 0), axis: (x: 0, y: 1, z: 0))
             .opacity(isFlipped ? 1 : 0)
@@ -99,6 +139,7 @@ struct ProgressViewComplete: View {
                 .opacity(0.3)
                 .foregroundColor(Color.green)
                 .shadow(radius: 5)
+            
             Circle()
                 .trim(from: 0.0, to: CGFloat(min(self.progress, 1.0)))
                 .stroke(style: StrokeStyle(lineWidth: 20.0, lineCap: .round, lineJoin: .round))
@@ -119,8 +160,15 @@ struct SummaryHabitView_Previews: PreviewProvider {
         //SummaryHabitView()
         //CompletedHabitView(habitlistVM: HabitListVM(), habit: Habit(name: "Running"))
         let mockHabits = [
-                    Habit(name: "Running", streak: 5, isTapped: true, progress: 0.5, done: false, lastToggled: Date(), habitStarted: Date()),
-                    Habit(name: "Meditation", streak: 10, isTapped: false, progress: 0.8, done: true, lastToggled: Date(), habitStarted: Date())
+                    Habit(name: "Running", streak: 66, isTapped: false, progress: 0.5, done: true, lastToggled: Date(), habitStarted: Date()),
+                    Habit(name: "Meditation", streak: 66, isTapped: false, progress: 0.8, done: true, lastToggled: Date(), habitStarted: Date()),
+                    Habit(name: "Running", streak: 66, isTapped: false, progress: 0.5, done: true, lastToggled: Date(), habitStarted: Date()),
+                    Habit(name: "Running", streak: 66, isTapped: false, progress: 0.5, done: true, lastToggled: Date(), habitStarted: Date()),
+                    Habit(name: "Running", streak: 66, isTapped: false, progress: 0.5, done: true, lastToggled: Date(), habitStarted: Date()),
+                    Habit(name: "Running", streak: 66, isTapped: false, progress: 0.5, done: true, lastToggled: Date(), habitStarted: Date()),
+                    Habit(name: "Running", streak: 66, isTapped: false, progress: 0.5, done: true, lastToggled: Date(), habitStarted: Date()),
+                    Habit(name: "Running", streak: 66, isTapped: false, progress: 0.5, done: true, lastToggled: Date(), habitStarted: Date()),
+                    Habit(name: "Running", streak: 66, isTapped: false, progress: 0.5, done: true, lastToggled: Date(), habitStarted: Date()),
                 ]
                 
                 let habitListVM = HabitListVM()

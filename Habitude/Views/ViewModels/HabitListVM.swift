@@ -36,7 +36,6 @@ class HabitListVM : ObservableObject {
             return
         }
          
-        
         let (newStreak, newProgress, newDone) = updateHabitProgress(habit: habit)
         
         let updatedData: [String: Any] = ["isTapped" : true, "streak": newStreak,
@@ -56,24 +55,7 @@ class HabitListVM : ObservableObject {
             completion()
         }
     }
-    
-//    func resetHabitIfNotTapped(habit: Habit){
-//
-//
-//        guard let user = auth.currentUser else { return }
-//        let habitsRef = db.collection("users").document(user.uid).collection("habits")
-//
-//        guard let lastToggled = habit.lastToggled else { return }
-//
-//        let calendar = Calendar.current
-//        let today = calendar.startOfDay(for: Date())
-//        let lastToggledDate = calendar.startOfDay(for: lastToggled)
-//        guard lastToggledDate < today else { return }
-//
-//        if let id = habit.id {
-//            habitsRef.document(id).setData(["streak": 0, "progress": 0], merge: true)
-//        }
-//    }
+
     
     func completeHabitFunctionality(habit: Habit){
         guard let user = auth.currentUser else { return }
@@ -194,3 +176,20 @@ class HabitListVM : ObservableObject {
     
 }
 
+//    func resetHabitIfNotTapped(habit: Habit){
+//
+//
+//        guard let user = auth.currentUser else { return }
+//        let habitsRef = db.collection("users").document(user.uid).collection("habits")
+//
+//        guard let lastToggled = habit.lastToggled else { return }
+//
+//        let calendar = Calendar.current
+//        let today = calendar.startOfDay(for: Date())
+//        let lastToggledDate = calendar.startOfDay(for: lastToggled)
+//        guard lastToggledDate < today else { return }
+//
+//        if let id = habit.id {
+//            habitsRef.document(id).setData(["streak": 0, "progress": 0], merge: true)
+//        }
+//    }
