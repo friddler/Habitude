@@ -16,8 +16,8 @@ struct Habit : Codable, Identifiable, Equatable {
     var isTapped : Bool = false // if the habits been tapped
     var progress: Float  = 0 // progressbar value
     var done: Bool = false // if the habit is done, done = true in 66 days
-    var lastToggled: Date?
-    var habitStarted: Date?
+    var lastToggled: Date? // when the habit was last toggled date
+    var habitStarted: Date? // date when habit was started
     
     var dateFormatter : DateFormatter {
         let formatter = DateFormatter()

@@ -21,8 +21,10 @@ struct SummaryHabitView: View {
             VStack{
                 
                 Text("Completed Habits").font(.title2)
-                    .fontDesign(.monospaced)
+                    .font(.title2)
+                    .fontWeight(.semibold)
                     .padding(.top, 55)
+                   
                 
                 ScrollView(.horizontal) {
                     HStack(spacing: 30) {
@@ -103,13 +105,17 @@ struct CompletedHabitView: View {
                 Text("Start: \(String(habit.formattedStartDate))")
                     .font(.system(size: 14))
                     .multilineTextAlignment(.center)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.5)
                     .frame(width: 100, height: 40)
-                    .fontDesign(.monospaced)
+            
                 Text("End: \(String(habit.formattedEndDate))")
                     .font(.system(size: 14))
                     .multilineTextAlignment(.center)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.5)
                     .frame(width: 100, height: 40)
-                    .fontDesign(.monospaced)
+                    
                 
             }
             .frame(width: 150, height: 150)
@@ -157,24 +163,9 @@ struct ProgressViewComplete: View {
 
 struct SummaryHabitView_Previews: PreviewProvider {
     static var previews: some View {
-        //SummaryHabitView()
+        SummaryHabitView()
         //CompletedHabitView(habitlistVM: HabitListVM(), habit: Habit(name: "Running"))
-        let mockHabits = [
-                    Habit(name: "Running", streak: 66, isTapped: false, progress: 0.5, done: true, lastToggled: Date(), habitStarted: Date()),
-                    Habit(name: "Meditation", streak: 66, isTapped: false, progress: 0.8, done: true, lastToggled: Date(), habitStarted: Date()),
-                    Habit(name: "Running", streak: 66, isTapped: false, progress: 0.5, done: true, lastToggled: Date(), habitStarted: Date()),
-                    Habit(name: "Running", streak: 66, isTapped: false, progress: 0.5, done: true, lastToggled: Date(), habitStarted: Date()),
-                    Habit(name: "Running", streak: 66, isTapped: false, progress: 0.5, done: true, lastToggled: Date(), habitStarted: Date()),
-                    Habit(name: "Running", streak: 66, isTapped: false, progress: 0.5, done: true, lastToggled: Date(), habitStarted: Date()),
-                    Habit(name: "Running", streak: 66, isTapped: false, progress: 0.5, done: true, lastToggled: Date(), habitStarted: Date()),
-                    Habit(name: "Running", streak: 66, isTapped: false, progress: 0.5, done: true, lastToggled: Date(), habitStarted: Date()),
-                    Habit(name: "Running", streak: 66, isTapped: false, progress: 0.5, done: true, lastToggled: Date(), habitStarted: Date()),
-                ]
-                
-                let habitListVM = HabitListVM()
-                habitListVM.completedHabits = mockHabits
-                
-                return SummaryHabitView(habitListVM: habitListVM)
+       
     }
 }
 

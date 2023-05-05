@@ -62,7 +62,7 @@
 		0E5E4FFB29ED46B100929FA9 /* HabitudeUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitudeUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		0E5E500B29ED496500929FA9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0E5E501629ED4E6C00929FA9 /* Habit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Habit.swift; sourceTree = "<group>"; };
-		0E5E501829ED56AD00929FA9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		0E5E501829ED56AD00929FA9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E7A4F7F29EFF3160033A2E8 /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		0E7A4F8129F2AEB10033A2E8 /* SummaryHabitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryHabitView.swift; sourceTree = "<group>"; };
 		0EBE817F2A03C85F00E3CA09 /* green.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = green.json; sourceTree = "<group>"; };
@@ -105,6 +105,7 @@
 			children = (
 				0E3200792A019F06007F8C10 /* meditate.json */,
 				0EBE817F2A03C85F00E3CA09 /* green.json */,
+				0E3200772A019D18007F8C10 /* LottieView.swift */,
 			);
 			path = "Lottie Files";
 			sourceTree = "<group>";
@@ -112,8 +113,6 @@
 		0E5E4FD229ED46B000929FA9 = {
 			isa = PBXGroup;
 			children = (
-				0E32007B2A019F65007F8C10 /* Lottie Files */,
-				0E5E500B29ED496500929FA9 /* GoogleService-Info.plist */,
 				0E5E4FDD29ED46B000929FA9 /* Habitude */,
 				0E5E4FEE29ED46B100929FA9 /* HabitudeTests */,
 				0E5E4FF829ED46B100929FA9 /* HabitudeUITests */,
@@ -134,11 +133,13 @@
 		0E5E4FDD29ED46B000929FA9 /* Habitude */ = {
 			isa = PBXGroup;
 			children = (
+				0E78772F2A04D24200E9C0F9 /* DataModel */,
+				0E32007B2A019F65007F8C10 /* Lottie Files */,
 				0E5E501829ED56AD00929FA9 /* Info.plist */,
-				0E5E501629ED4E6C00929FA9 /* Habit.swift */,
-				0E3200772A019D18007F8C10 /* LottieView.swift */,
+				0E5E500B29ED496500929FA9 /* GoogleService-Info.plist */,
 				0EBE81832A040C0600E3CA09 /* DateExtension.swift */,
 				0E5E4FDE29ED46B000929FA9 /* HabitudeApp.swift */,
+				0ECF941129ED6D9A004097F8 /* ViewModels */,
 				0E5E500829ED46EC00929FA9 /* Views */,
 				0E5E4FE229ED46B100929FA9 /* Assets.xcassets */,
 				0E5E4FE429ED46B100929FA9 /* Preview Content */,
@@ -176,9 +177,16 @@
 			children = (
 				0E7A4F8129F2AEB10033A2E8 /* SummaryHabitView.swift */,
 				0E5E4FE029ED46B000929FA9 /* ContentView.swift */,
-				0ECF941129ED6D9A004097F8 /* ViewModels */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		0E78772F2A04D24200E9C0F9 /* DataModel */ = {
+			isa = PBXGroup;
+			children = (
+				0E5E501629ED4E6C00929FA9 /* Habit.swift */,
+			);
+			path = DataModel;
 			sourceTree = "<group>";
 		};
 		0ECF941129ED6D9A004097F8 /* ViewModels */ = {

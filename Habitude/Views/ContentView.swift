@@ -142,7 +142,7 @@ struct HabitListView: View {
         NavigationView {
             VStack {
                 ScrollView {
-                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 200)), GridItem(.adaptive(minimum: 200))], spacing: 10){
+                    LazyVGrid(columns: [GridItem(.adaptive(minimum: 200)), GridItem(.adaptive(minimum: 200))], spacing: 20){
                         ForEach(habitListVM.habits, id: \.id) { habit in
                             RowView(habit: habit, vm: habitListVM)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -211,24 +211,54 @@ struct AddHabitView: View {
     
     
     var body: some View {
-        VStack {
-            Form {
-                Section("Habit name"){
-                    TextField("Habit:", text: $habitName)
-                }
-                
-                Section("Habit started: "){
-                    DatePicker("I started on", selection: $habitStarted, displayedComponents: [.date])
-                        .accentColor(Color.green)
-                }
-            }
+        ZStack {
+            LottieView(loopMode: .loop, animationName: "green")
+                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+                .edgesIgnoringSafeArea(.all)
             
-            Button("Save") {
-                habitListVM.saveToFirestore(habitName: habitName, habitStarted: habitStarted)
-                habitName = ""
-                presentationMode.wrappedValue.dismiss()
+            VStack(spacing: 20) {
+                Text("Add a new habit")
+                    .font(.title)
+                    .bold()
+                    .padding()
                 
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("Habit name")
+                        .font(.headline)
+                    
+                    TextField("Enter habit name", text: $habitName)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .padding(.horizontal, 10)
+                        .accentColor(.green)
+                }
+                
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("Habit started")
+                        .font(.headline)
+                    
+                    DatePicker("Select date", selection: $habitStarted, displayedComponents: [.date])
+                        .accentColor(.green)
+                        .padding(.horizontal, 10)
+                }
+                
+                Button(action: {
+                    habitListVM.saveToFirestore(habitName: habitName, habitStarted: habitStarted)
+                    habitName = ""
+                    presentationMode.wrappedValue.dismiss()
+                }) {
+                    Text("Save")
+                        .foregroundColor(.white)
+                        .padding(.vertical, 10)
+                        .padding(.horizontal, 50)
+                        .background(Color.green)
+                        .cornerRadius(20)
+                }
             }
+            .padding()
+            .background(Color.white.opacity(0.8))
+            .cornerRadius(10)
+            .shadow(radius: 10)
+            .frame(width: 300, height: 400)
         }
     }
 }
@@ -258,9 +288,11 @@ struct RowView: View {
                 Button(action: {
                     vm.delete(habit: habit)
                 }, label: {
-                    Image(systemName: "minus.circle.fill")
+                    Image(systemName: "trash")
                         .foregroundColor(.red)
                 })
+                .padding(.top, 10)
+                
             }
         }
     }
@@ -338,34 +370,9 @@ struct ContentView_Previews: PreviewProvider {
         //ContentView()
         //HabitListView(authVM: AuthViewModel())
         SignInView(authVM: AuthViewModel())
-        //RowView(habit: Habit(name: "Running", vm: HabitListVM())
+        //RowView(habit: Habit(name: "Frida"), vm: HabitListVM())
         //AddHabitView()
-//
+
     }
 }
 
-
-
-/*
- 
- 
- 
- .alert("Add", isPresented: $showAddAlert) {
- TextField("Add", text: $newHabitName)
- Button("Add", action: {
- habitListVM.saveToFirestore(habitName: newHabitName)
- newHabitName = ""
- })
- 
- 
- 
- Button(action: {
- vm.toggleItem(habit: habit)
- }) {
- Text(habit.name)
- .font(.system(size: 18).bold())
- .foregroundColor(.white)
- .frame(width: 140, height: 140)
- .padding(15)
- .background(RoundedRectangle(cornerRadius: 50).foregroundColor(habit.done ? .green.opacity(0.5) : .red.opacity(0.5)))
- */

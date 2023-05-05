@@ -45,7 +45,7 @@ class AuthViewModel: ObservableObject {
                 signedIn = true
             }
             
-            scheduleDailyNotification(hour: 9, minute: 0, identifier: "habitReminder", title: "Habit Reminder", body: "Don't forget to tap your habits to keep your streak!")
+            scheduleDailyNotification(hour: 20, minute: 02, identifier: "habitReminder", title: "Habit Reminder", body: "Don't forget to tap your habits to keep your streak!")
         }
     }
     
@@ -60,7 +60,6 @@ class AuthViewModel: ObservableObject {
         }
         
     }
-    
     func signOut() {
         do {
             try auth.signOut()
